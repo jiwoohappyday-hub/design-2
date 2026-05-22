@@ -1,0 +1,1619 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>디자인 역사 : 시대·사조·트렌드·기법 인과 구조도</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Mono:wght@400;500&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0b0b0c;--bg2:#131315;--bg3:#1a1a1e;--bg4:#222226;
+  --border:rgba(255,255,255,0.06);--border2:rgba(255,255,255,0.12);
+  --text:#dedad2;--muted:#5e5c57;--muted2:#35342f;
+  --c1:#c8a96e;--c2:#c8816e;--c3:#a96ec8;
+  --c4:#6e9ec8;--c5:#c86e8a;--c6:#6ec8a9;--c7:#c8b86e;--c8:#6e7ec8;
+}
+html,body{height:100%;overflow:hidden}
+body{background:var(--bg);color:var(--text);font-family:'Noto Sans KR',sans-serif;font-weight:300;display:flex;flex-direction:column;}
+
+/* TOP */
+.top{display:flex;align-items:center;justify-content:space-between;padding:12px 24px;border-bottom:1px solid var(--border);flex-shrink:0;z-index:50;background:rgba(11,11,12,0.85);backdrop-filter:blur(20px);}
+.top-title{font-size:16px;font-weight:500;letter-spacing:-0.02em;}
+.top-sub{font-size:9px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;margin-top:2px}
+.meta-criteria{display:flex;gap:16px;align-items:center;background:var(--bg2);border:1px solid var(--border);padding:6px 14px;border-radius:6px;}
+.meta-label{font-size:9px;font-weight:500;color:var(--muted);letter-spacing:.05em;}
+.meta-item{font-size:10px;color:var(--text);display:flex;align-items:center;gap:4px;}
+.meta-item span{font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);}
+
+/* CANVAS */
+.canvas{flex:1;overflow:auto;}
+.atlas{display:flex;flex-direction:row;align-items:stretch;min-height:100%;}
+.atlas-left{display:flex;flex-direction:column;flex-shrink:0;border-right:2px solid rgba(255,255,255,0.1);position:relative;}
+.atlas-left::after{content:'';position:absolute;right:-13px;top:50%;transform:translateY(-50%);width:0;height:0;border-top:10px solid transparent;border-bottom:10px solid transparent;border-left:13px solid rgba(255,255,255,0.13);z-index:5;}
+.atlas-right{display:flex;flex-direction:column;flex-shrink:0;}
+.merge-label{position:sticky;left:0;display:flex;align-items:center;justify-content:center;padding:8px 20px;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-family:'DM Mono',monospace;background:rgba(11,11,12,0.9);border-bottom:1px solid var(--border);gap:8px;}
+.merge-label::before,.merge-label::after{content:'';flex:1;height:1px;background:linear-gradient(to right,transparent,var(--border2));}
+.merge-label::after{background:linear-gradient(to left,transparent,var(--border2));}
+
+/* 트랙 레이블 */
+.track{display:flex;flex-direction:column;}
+.track-header{
+  position:sticky;left:0;z-index:20;
+  display:flex;align-items:center;gap:12px;
+  padding:10px 24px;
+  border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border2);
+  background:rgba(11,11,12,0.92);
+  backdrop-filter:blur(12px);
+  flex-shrink:0;
+}
+.track-label{
+  font-size:9px;letter-spacing:.16em;text-transform:uppercase;
+  font-family:'DM Mono',monospace;color:var(--muted);
+}
+.track-title{font-size:13px;font-weight:500;}
+.track-desc{font-size:9px;color:var(--muted);}
+.track-divider{
+  width:1px;height:16px;background:var(--border2);flex-shrink:0;
+}
+
+/* 트랙 안의 가로 스크롤 행 */
+.grid{display:flex;align-items:flex-start;min-height:280px;padding-top:16px;padding-bottom:16px;}
+.era-section{flex-shrink:0;display:flex;height:100%;border-right:1px solid var(--border);}
+
+/* 동양 트랙 구분선 */
+.track.east .track-header{
+  border-top:2px solid rgba(200,169,110,0.2);
+}
+
+/* ERA INFO */
+.era-info-col{width:260px;flex-shrink:0;padding:24px;background:rgba(11,11,12,0.4);backdrop-filter:blur(10px);position:sticky;left:0;z-index:10;border-right:1px solid var(--border);display:flex;flex-direction:column;}
+.era-num{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);margin-bottom:4px}
+.era-name{font-size:18px;font-weight:500;line-height:1.2;margin-bottom:6px}
+.era-period{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);margin-bottom:16px}
+.era-bg{font-size:9px;color:var(--muted);display:flex;flex-wrap:wrap;gap:6px;margin-bottom:24px;}
+.era-bg-pill{padding:3px 10px;border-radius:2px;border:1px solid var(--border);background:var(--bg2);white-space:nowrap;}
+.era-next-box{padding:16px;font-size:10px;color:var(--muted);border:1px solid var(--border);background:var(--bg2);border-radius:8px;line-height:1.6;display:flex;gap:12px;align-items:flex-start;margin-top:auto;}
+.era-next-arrow{flex-shrink:0;font-size:14px}
+
+/* MOVEMENTS */
+.movements-row{display:flex;align-items:flex-start;gap:16px;padding:40px 32px 80px 32px;min-height:100%;}
+
+/* CARD */
+.mov{flex-shrink:0;width:300px;border:1px solid var(--border);border-radius:10px;overflow:hidden;background:var(--bg2);display:flex;flex-direction:column;cursor:pointer;transition:border-color .2s,transform .2s,box-shadow .2s;}
+.mov:hover{border-color:var(--border2);transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,.4);}
+.mov.active{border-color:rgba(255,255,255,0.22);box-shadow:0 0 0 1px rgba(255,255,255,0.08),0 8px 32px rgba(0,0,0,.5);}
+.mov.upcoming{background:transparent;border-color:rgba(255,255,255,0.03);cursor:default;}
+.mov.upcoming:hover{border-color:rgba(255,255,255,0.05);transform:none;box-shadow:none;}
+.mov .tree-section{overflow-y:auto;padding-bottom:18px;}
+
+.mov-head{padding:12px 14px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;gap:10px;}
+.mov-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:5px;}
+.mov-info{flex:1;min-width:0;}
+.mov-name{font-size:12px;font-weight:500;line-height:1.4;margin-bottom:4px;word-break:keep-all;}
+.mov-art-tag{display:inline-block;font-size:8px;padding:1px 5px;border-radius:2px;background:rgba(200,110,138,.12);color:#c86e8a;margin-bottom:5px;}
+.mov-cases{font-size:9px;color:var(--muted);line-height:1.6}
+.mov-cases b{color:var(--text);font-weight:400}
+.mov-modern{margin-top:8px;font-size:9px;padding:6px 10px;border-radius:4px;border:1px solid;line-height:1.4;}
+
+/* WHY / WHAT / HOW / NOW layer summary */
+.layer-summary{
+  margin:10px 14px 0;
+  padding:10px 10px 8px;
+  border:1px solid var(--border);
+  border-radius:7px;
+  background:rgba(255,255,255,0.018);
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+.layer-row{display:grid;grid-template-columns:38px 1fr;gap:8px;align-items:start;}
+.layer-key{
+  font-family:'DM Mono',monospace;
+  font-size:8px;
+  letter-spacing:.08em;
+  color:var(--muted);
+  padding-top:1px;
+}
+.layer-value{
+  font-size:9px;
+  color:var(--text);
+  line-height:1.45;
+  word-break:keep-all;
+}
+.layer-value.muted{color:var(--muted);}
+.layer-chips{display:flex;flex-wrap:wrap;gap:4px;}
+.layer-chip{
+  font-size:8px;
+  color:var(--muted);
+  border:1px solid var(--border);
+  background:var(--bg3);
+  border-radius:3px;
+  padding:2px 6px;
+  line-height:1.25;
+}
+.panel-layer-summary{
+  padding:14px;
+  border:1px solid var(--border);
+  border-radius:8px;
+  background:rgba(255,255,255,0.02);
+}
+.panel-layer-summary .layer-row{grid-template-columns:52px 1fr;margin-bottom:9px;}
+.panel-layer-summary .layer-row:last-child{margin-bottom:0;}
+.panel-layer-summary .layer-key{font-size:9px;}
+.panel-layer-summary .layer-value{font-size:10px;line-height:1.65;}
+
+/* CLICK HINT */
+.mov-hint{font-size:8px;color:var(--muted);text-align:center;padding:5px 0 8px;letter-spacing:.08em;opacity:.6;}
+
+/* TREE */
+.tree-section{padding:10px 14px 12px 14px;}
+.tree-label{font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;display:flex;align-items:center;gap:6px;}
+.tree-label::before{content:'';display:block;width:14px;height:1px;background:var(--muted2);}
+.trend-row{display:flex;align-items:flex-start;padding:2px 0;}
+.trend-line{width:18px;flex-shrink:0;position:relative;align-self:stretch;}
+.trend-line::before{content:'';position:absolute;left:7px;top:0;bottom:0;width:1px;background:var(--muted2);}
+.trend-row:last-child .trend-line::before,.trend-row:last-child .trend-line::after{display:none;}
+.trend-line::after{content:'';position:absolute;left:7px;top:10px;width:8px;height:1px;background:var(--muted2);}
+.trend-body{flex:1;padding-bottom:4px}
+.trend-name{font-size:10px;color:var(--text);padding:2px 0;line-height:1.4;}
+.tech-rows{padding-left:14px;margin-top:2px;}
+.tech-row{display:flex;align-items:flex-start;gap:0;padding:1px 0;}
+.tech-line{width:16px;flex-shrink:0;position:relative;align-self:stretch;}
+.tech-line::before{content:'';position:absolute;left:6px;top:0;bottom:0;width:1px;background:var(--muted2);opacity:.5;}
+.tech-row:last-child .tech-line::before{height:8px;bottom:auto;}
+.tech-line::after{content:'';position:absolute;left:6px;top:8px;width:7px;height:1px;background:var(--muted2);opacity:.5;}
+.tech-name{font-size:9px;color:var(--muted);padding:1px 0;line-height:1.4;}
+
+/* ══ OVERLAY ══ */
+.overlay{position:fixed;inset:0;z-index:80;background:transparent;pointer-events:none;transition:background .25s;}
+.overlay.open{background:rgba(0,0,0,0.55);pointer-events:all;}
+
+/* ══ SIDE PANEL ══ */
+.panel{
+  position:fixed;top:0;right:0;width:480px;height:100vh;
+  background:var(--bg3);border-left:1px solid var(--border2);
+  z-index:90;display:flex;flex-direction:column;
+  transform:translateX(100%);transition:transform .32s cubic-bezier(.4,0,.2,1);
+  overflow:hidden;
+}
+.panel.open{transform:translateX(0);}
+
+/* Panel Header */
+.panel-header{
+  padding:20px 52px 16px 24px;
+  border-bottom:1px solid var(--border);
+  flex-shrink:0;
+  position:relative;
+}
+.panel-close{
+  position:absolute;top:16px;right:16px;
+  width:30px;height:30px;border-radius:50%;
+  border:1px solid var(--border2);background:var(--bg2);
+  color:var(--muted);font-size:16px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .15s;
+}
+.panel-close:hover{background:var(--bg4);color:var(--text);}
+.panel-era-badge{
+  font-size:8px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:6px;
+  font-family:'DM Mono',monospace;
+}
+.panel-title{font-size:20px;font-weight:500;line-height:1.2;margin-bottom:6px;}
+.panel-art{display:inline-block;font-size:9px;padding:2px 7px;border-radius:3px;background:rgba(200,110,138,.12);color:#c86e8a;margin-bottom:8px;}
+.panel-meta{font-size:10px;color:var(--muted);line-height:1.8;margin-bottom:10px;}
+.panel-meta b{color:var(--text);font-weight:400;}
+.panel-modern{font-size:10px;padding:8px 12px;border-radius:5px;border:1px solid;line-height:1.5;}
+
+/* Panel Body */
+.panel-body{flex:1;overflow-y:auto;padding:20px 24px 40px;}
+
+/* Section */
+.ps{margin-bottom:28px;}
+.ps-title{
+  font-size:9px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:12px;padding-bottom:8px;
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:8px;
+}
+.ps-title-icon{font-size:12px;}
+
+/* IMAGE PREVIEW GRID */
+.img-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:4px;}
+.img-item{
+  border-radius:6px;overflow:hidden;
+  border:1px solid var(--border);
+  cursor:pointer;transition:border-color .15s,transform .15s;
+  background:var(--bg2);
+  text-decoration:none;
+  display:block;
+}
+.img-item:hover{border-color:var(--border2);transform:scale(1.02);}
+.img-preview{
+  min-height:118px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  gap:8px;
+  padding:14px 12px;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(255,255,255,0.05), transparent 28%),
+    linear-gradient(135deg, rgba(255,255,255,0.035), rgba(255,255,255,0.01));
+}
+.img-preview-kicker{
+  font-size:8px;
+  color:var(--muted);
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  font-family:'DM Mono',monospace;
+}
+.img-preview-title{
+  font-size:12px;
+  color:var(--text);
+  line-height:1.45;
+  word-break:keep-all;
+}
+.img-preview-action{
+  font-size:9px;
+  color:var(--muted);
+  margin-top:2px;
+}
+.img-item-label{font-size:9px;color:var(--muted);padding:6px 8px;line-height:1.4;border-top:1px solid var(--border);}
+.img-notice{font-size:9px;color:var(--muted);margin-top:6px;line-height:1.5;font-style:italic;}
+
+/* LINK BUTTONS */
+.link-list{display:flex;flex-direction:column;gap:8px;}
+.link-btn{
+  display:flex;align-items:center;gap:12px;
+  padding:10px 14px;border-radius:7px;
+  border:1px solid var(--border);background:var(--bg2);
+  text-decoration:none;color:var(--text);
+  transition:all .15s;cursor:pointer;
+}
+.link-btn:hover{border-color:var(--border2);background:var(--bg4);}
+.link-icon{
+  width:28px;height:28px;border-radius:6px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;flex-shrink:0;
+}
+.link-info{flex:1;min-width:0;}
+.link-name{font-size:11px;font-weight:500;margin-bottom:2px;}
+.link-desc{font-size:9px;color:var(--muted);}
+.link-arrow{font-size:12px;color:var(--muted);}
+
+/* WORK LIST */
+.work-list{display:flex;flex-direction:column;gap:6px;}
+.work-item{
+  padding:8px 12px;border-radius:5px;
+  border:1px solid var(--border);background:var(--bg2);
+  font-size:10px;color:var(--text);line-height:1.5;
+}
+.work-link{
+  display:block;
+  text-decoration:none;
+  color:var(--text);
+  transition:all .15s;
+  position:relative;
+  padding-right:18px;
+}
+.work-link:hover{
+  border-color:var(--border2);
+  background:var(--bg4);
+  transform:translateX(2px);
+}
+.work-link::after{
+  content:'↗';
+  position:absolute;
+  right:10px;
+  top:50%;
+  transform:translateY(-50%);
+  color:var(--muted);
+  font-size:10px;
+}
+.work-kicker{
+  display:block;
+  font-size:8px;
+  color:var(--muted);
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  margin-bottom:3px;
+  font-family:'DM Mono',monospace;
+}
+.work-title{
+  display:block;
+  font-size:10px;
+  color:var(--text);
+  line-height:1.45;
+  word-break:keep-all;
+}
+.work-brand .work-title{
+  color:inherit;
+}
+
+
+/* WORK DETAIL */
+.work-detail{
+  margin-top:10px;
+  padding:14px;
+  border-radius:8px;
+  border:1px solid var(--border2);
+  background:rgba(255,255,255,0.025);
+}
+.work-detail-kicker{
+  font-family:'DM Mono',monospace;
+  font-size:8px;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  color:var(--muted);
+  margin-bottom:6px;
+}
+.work-detail-title{
+  font-size:14px;
+  font-weight:500;
+  color:var(--text);
+  margin-bottom:8px;
+  line-height:1.45;
+}
+.work-detail-text{
+  font-size:10px;
+  color:var(--muted);
+  line-height:1.7;
+  word-break:keep-all;
+}
+.work-detail-links{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  margin-top:12px;
+}
+.work-detail-link{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  padding:8px 10px;
+  border-radius:6px;
+  border:1px solid var(--border);
+  background:var(--bg2);
+  text-decoration:none;
+  color:var(--text);
+  font-size:10px;
+}
+.work-detail-link:hover{
+  border-color:var(--border2);
+  background:var(--bg4);
+}
+.work-detail-link span{
+  color:var(--muted);
+  font-size:9px;
+}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+
+/* ── 현대 파트 추가 UI ── */
+
+/* 기간 배지 */
+.period-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:4px 10px;border-radius:4px;
+  border:1px solid var(--border2);
+  background:var(--bg2);
+  font-size:9px;font-family:'DM Mono',monospace;
+  color:var(--muted);margin-bottom:10px;
+}
+.period-badge-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0;}
+
+/* why 박스 */
+.why-box{
+  padding:10px 14px;border-radius:6px;
+  border-left:3px solid;
+  background:var(--bg2);
+  font-size:10px;color:var(--muted);
+  line-height:1.7;margin-bottom:16px;
+}
+.why-box-label{
+  font-size:8px;letter-spacing:.12em;text-transform:uppercase;
+  font-family:'DM Mono',monospace;
+  margin-bottom:5px;color:var(--muted);
+  display:flex;align-items:center;gap:5px;
+}
+
+/* 지역별 탭 */
+.region-tabs{
+  display:flex;gap:4px;flex-wrap:wrap;
+  margin-bottom:12px;
+}
+.region-tab{
+  padding:4px 10px;border-radius:4px;
+  border:1px solid var(--border);background:var(--bg2);
+  font-size:9px;color:var(--muted);cursor:pointer;
+  transition:all .15s;
+}
+.region-tab:hover{border-color:var(--border2);color:var(--text);}
+.region-tab.active{
+  background:var(--bg4);color:var(--text);
+  border-color:var(--border2);
+}
+
+/* 지역 콘텐츠 */
+.region-content{display:none;}
+.region-content.active{display:block;}
+
+.region-trend-item{
+  padding:10px 12px;border-radius:6px;
+  border:1px solid var(--border);background:var(--bg2);
+  margin-bottom:8px;
+}
+.region-trend-header{
+  display:flex;align-items:flex-start;
+  justify-content:space-between;gap:8px;
+  margin-bottom:4px;
+}
+.region-trend-name{font-size:11px;font-weight:500;color:var(--text);}
+.region-trend-period{
+  font-size:8px;font-family:'DM Mono',monospace;
+  color:var(--muted);white-space:nowrap;flex-shrink:0;
+}
+.region-trend-why{
+  font-size:9px;color:var(--muted);line-height:1.6;
+  margin-bottom:6px;
+}
+.region-trend-techs{
+  display:flex;flex-wrap:wrap;gap:4px;
+}
+.region-trend-tech{
+  padding:2px 7px;border-radius:3px;
+  border:1px solid var(--border);
+  font-size:8px;color:var(--muted);
+  background:var(--bg3);
+}
+.region-trend-brand{
+  font-size:9px;margin-top:5px;
+  padding-top:5px;border-top:1px solid var(--border);
+  color:var(--muted);
+}
+
+/* 현대 참고 브랜드 */
+.modern-ref-item{
+  display:flex;align-items:flex-start;gap:10px;
+  padding:8px 12px;border-radius:5px;
+  border:1px solid var(--border);background:var(--bg2);
+  text-decoration:none;color:var(--text);
+  transition:all .15s;cursor:pointer;margin-bottom:6px;
+}
+.modern-ref-item:hover{border-color:var(--border2);background:var(--bg4);}
+.modern-ref-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:4px;}
+.modern-ref-info{flex:1;min-width:0;}
+.modern-ref-name{font-size:11px;font-weight:500;margin-bottom:2px;}
+.modern-ref-desc{font-size:9px;color:var(--muted);line-height:1.5;}
+.modern-ref-arrow{font-size:11px;color:var(--muted);flex-shrink:0;}
+
+/* BG */
+.bg-glow{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:-1;background:radial-gradient(circle at 20% 30%,rgba(200,169,110,.03),transparent 40%),radial-gradient(circle at 80% 70%,rgba(110,158,200,.03),transparent 40%);}
+</style>
+</head>
+<body>
+<div class="bg-glow"></div>
+
+<!-- TOP BAR -->
+<div class="top">
+  <div>
+    <div class="top-title">디자인 역사 : 시대·사조·트렌드·기법 인과 구조도</div>
+    <div class="top-sub">The Design Atlas — 거시적 인과 관계와 미시적 조형 기법의 시스템 맵핑</div>
+  </div>
+  <div class="meta-criteria">
+    <div class="meta-label">대표 사례 선정 기준</div>
+    <div class="meta-item"><span>①</span> 시대 영향력</div>
+    <div class="meta-item"><span>②</span> 디자인 전환점</div>
+    <div class="meta-item"><span>③</span> 현대 연결성</div>
+  </div>
+</div>
+
+<!-- CANVAS -->
+<div class="canvas">
+<div class="atlas" id="atlas">
+
+  <!-- 왼쪽: 서양 + 동양 -->
+  <div class="atlas-left" id="atlasLeft">
+
+    <div class="track west" id="trackWest">
+      <div class="track-header">
+        <span class="track-label">Track 01</span>
+        <div class="track-divider"></div>
+        <span class="track-title" style="color:#6e9ec8">서양 디자인사</span>
+        <div class="track-divider"></div>
+        <span class="track-desc">선사 ~ 포스트모던 · 기원전 40,000 ~ 1990s</span>
+      </div>
+      <div class="grid" id="gridWest"></div>
+    </div>
+
+    <div class="track east" id="trackEast">
+      <div class="track-header">
+        <span class="track-label">Track 02</span>
+        <div class="track-divider"></div>
+        <span class="track-title" style="color:#c8a96e">동양 디자인사</span>
+        <div class="track-divider"></div>
+        <span class="track-desc">한 · 중 · 일 통합 · 고대 ~ 근대</span>
+      </div>
+      <div class="grid" id="gridEast"></div>
+    </div>
+
+  </div>
+
+  <!-- 오른쪽: 현대 합류 -->
+  <div class="atlas-right" id="atlasRight">
+    <div class="track modern" id="trackModern">
+      <div class="track-header">
+        <span class="track-label">합류 · Track 03</span>
+        <div class="track-divider"></div>
+        <span class="track-title" style="color:#6ec8a9">현대 · 글로벌 디자인</span>
+        <div class="track-divider"></div>
+        <span class="track-desc">동서양 합류 · 1990s ~ 현재</span>
+      </div>
+      <div class="merge-label">서양 + 동양 → 인터넷으로 합류</div>
+      <div class="grid" id="gridModern"></div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- OVERLAY -->
+<div class="overlay" id="overlay" onclick="closePanel()"></div>
+
+<!-- SIDE PANEL -->
+<div class="panel" id="panel">
+  <div class="panel-header" id="panelHeader">
+    <button class="panel-close" onclick="closePanel()">✕</button>
+    <div class="panel-era-badge" id="panelEra"></div>
+    <div class="panel-title" id="panelTitle"></div>
+    <div id="panelArtTag"></div>
+    <div class="panel-meta" id="panelMeta"></div>
+    <div class="panel-modern" id="panelModern"></div>
+  </div>
+  <div class="panel-body">
+
+    <!-- WHY / WHAT / HOW / NOW 요약 -->
+    <div class="ps">
+      <div class="ps-title"><span class="ps-title-icon">🧭</span> WHY · WHAT · HOW · NOW 구조 요약</div>
+      <div class="panel-layer-summary" id="panelLayerSummary"></div>
+    </div>
+
+    <!-- 대표 이미지 -->
+    <div class="ps">
+      <div class="ps-title"><span class="ps-title-icon">🖼</span> 대표 이미지 자료 — 클릭하면 관련 이미지 검색으로 이동</div>
+      <div class="img-grid" id="panelImgs"></div>
+      <div class="img-notice">* 외부 이미지 API가 차단되어도 깨지지 않도록, 대표 이미지는 검색 프리뷰 카드로 표시돼요. 클릭하면 Google 이미지/검색 자료로 이동합니다.</div>
+    </div>
+
+    <!-- 외부 링크 -->
+    <div class="ps">
+      <div class="ps-title"><span class="ps-title-icon">🔗</span> 더 알아보기 — 클릭하면 새 탭으로 이동</div>
+      <div class="link-list" id="panelLinks"></div>
+    </div>
+
+    <!-- 대표 작품 목록 -->
+    <div class="ps">
+      <div class="ps-title"><span class="ps-title-icon">📋</span> 대표 작품 · 브랜드 — 누르면 작품 소개가 열림</div>
+      <div class="work-list" id="panelWorks"></div>
+      <div id="workDetail"></div>
+    </div>
+
+    <!-- 현대 참고 브랜드/작품 -->
+    <div class="ps" id="modernRefsSection" style="display:none">
+      <div class="ps-title"><span class="ps-title-icon">🔮</span> 현대에서 이 사조를 참고한 브랜드 · 작품</div>
+      <div class="work-list" id="panelModernRefs"></div>
+    </div>
+
+    <!-- 현대 전용: 기간 + Why -->
+    <div class="ps" id="modernPeriodSection" style="display:none">
+      <div class="ps-title"><span class="ps-title-icon">📅</span> 트렌드 발생 배경 · 기간</div>
+      <div id="panelPeriodBadge"></div>
+      <div id="panelWhyBox"></div>
+    </div>
+
+    <!-- 현대 전용: 지역별 트렌드 -->
+    <div class="ps" id="modernRegionSection" style="display:none">
+      <div class="ps-title"><span class="ps-title-icon">🌏</span> 지역별 트렌드</div>
+      <div class="region-tabs" id="regionTabs"></div>
+      <div id="regionContents"></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════════
+// ✏️ 수정 구역 — 현대 참고 브랜드/작품 데이터
+// 사조 이름 키 → 현대 브랜드/작품 배열
+// 각 항목: { name, desc, link, color }
+// ══════════════════════════════════════════════════════
+const MODERN_REFS = {
+
+  // 01 선사
+  "생존 중심 조형": [
+    { name:"다이슨 (Dyson)", desc:"기능 최적화 철학 — 불필요한 것을 제거한 도구 설계", link:"https://ko.wikipedia.org/wiki/다이슨_(기업)", color:"#c8a96e" },
+    { name:"애플 매직 마우스", desc:"인체공학 + 미니멀 형태 — 생존 중심 조형의 현대판", link:"https://www.apple.com/shop/product/MK2C3LL/A/magic-mouse", color:"#c8a96e" },
+  ],
+  "자연 모방 조형": [
+    { name:"나이키 에어 조던", desc:"사모트라케의 니케 → Nike 브랜드 → 스포츠 아이콘", link:"https://ko.wikipedia.org/wiki/나이키", color:"#c8a96e" },
+    { name:"Zaha Hadid 건축", desc:"자연 유기체 형태를 건축에 적용한 바이오미미크리 선구자", link:"https://ko.wikipedia.org/wiki/자하_하디드", color:"#c8a96e" },
+  ],
+  "주술적 상징주의": [
+    { name:"나이키 스우시 로고", desc:"단순한 선 하나가 브랜드 상징이 된 현대 심볼리즘의 정수", link:"https://ko.wikipedia.org/wiki/나이키", color:"#c8a96e" },
+    { name:"애플 로고", desc:"한 입 베어 문 사과 — 인류 보편 상징을 브랜드로 치환", link:"https://ko.wikipedia.org/wiki/애플_(기업)", color:"#c8a96e" },
+  ],
+
+  // 02 고대
+  "이집트 양식": [
+    { name:"루브르 아부다비", desc:"사막 위의 기념비적 건축 — 이집트 거대 건축의 현대 해석", link:"https://en.wikipedia.org/wiki/Louvre_Abu_Dhabi", color:"#c8816e" },
+    { name:"이집트 에어 CI", desc:"황금비 + 파라오 상징을 항공사 브랜딩에 적용", link:"https://en.wikipedia.org/wiki/EgyptAir", color:"#c8816e" },
+  ],
+  "그리스 고전주의": [
+    { name:"버사체 (Versace)", desc:"그리스 신화 메두사를 로고로 — 황금비 기반 패턴 디자인", link:"https://ko.wikipedia.org/wiki/베르사체", color:"#c8816e" },
+    { name:"뉴욕 메트로폴리탄 미술관", desc:"그리스 신전 파사드를 그대로 현대 문화기관에 적용", link:"https://ko.wikipedia.org/wiki/메트로폴리탄_미술관", color:"#c8816e" },
+  ],
+  "헬레니즘": [
+    { name:"나이키 (Nike Inc.)", desc:"사모트라케의 니케 → 브랜드 네이밍 + 스우시 로고 원형", link:"https://ko.wikipedia.org/wiki/나이키", color:"#c8816e" },
+  ],
+  "로마 클래식": [
+    { name:"워싱턴 D.C. 도시 설계", desc:"로마 도시 그리드를 그대로 계승한 현대 수도 계획", link:"https://en.wikipedia.org/wiki/L%27Enfant_Plan", color:"#c8816e" },
+    { name:"국회의사당 건축 (전 세계)", desc:"로마 판테온 돔 → 민주주의 건축의 글로벌 표준", link:"https://ko.wikipedia.org/wiki/판테온_(로마)", color:"#c8816e" },
+  ],
+
+  // 03 중세
+  "고딕": [
+    { name:"루이비통 (LV 모노그램)", desc:"고딕 → 고딕 리바이벌 → 럭셔리 모노그램 → LV 패턴으로 계승", link:"https://ko.wikipedia.org/wiki/루이_비통", color:"#a96ec8" },
+    { name:"Harry Potter 비주얼 아이덴티티", desc:"고딕 서체 + 첨탑 건축 이미지가 판타지 세계관의 표준이 됨", link:"https://en.wikipedia.org/wiki/Harry_Potter", color:"#a96ec8" },
+  ],
+  "이슬람 아트": [
+    { name:"에르메스 (Hermès) 스카프 패턴", desc:"아라베스크 기하학 패턴을 럭셔리 텍스타일에 계승", link:"https://ko.wikipedia.org/wiki/에르메스", color:"#a96ec8" },
+    { name:"Adobe Illustrator 패턴 도구", desc:"이슬람 기하학 반복 패턴이 디지털 디자인 툴의 핵심 기능으로", link:"https://ko.wikipedia.org/wiki/어도비_일러스트레이터", color:"#a96ec8" },
+  ],
+  "중세 장인 문화": [
+    { name:"에르메스 (Hermès) 장인 정신", desc:"길드 수공예 문화 → 럭셔리 아르티장 브랜딩의 원형", link:"https://ko.wikipedia.org/wiki/에르메스", color:"#a96ec8" },
+    { name:"무인양품 (MUJI) 수공예 라인", desc:"핸드메이드 감성 + 장인 철학을 현대 리테일에 적용", link:"https://ko.wikipedia.org/wiki/무인양품", color:"#a96ec8" },
+  ],
+
+  // 04 르네상스
+  "전성기 르네상스": [
+    { name:"레오나르도 DiCaprio 재단 시각물", desc:"황금비 레이아웃이 현대 친환경 브랜딩에도 적용됨", link:"https://www.leonardodicaprio.org", color:"#6e9ec8" },
+    { name:"Adobe Golden Ratio 도구", desc:"피보나치 수열·황금비가 디자인 툴의 레이아웃 가이드로", link:"https://ko.wikipedia.org/wiki/황금비", color:"#6e9ec8" },
+  ],
+  "르네상스 인문주의": [
+    { name:"Medium 편집 플랫폼", desc:"알두스 마누티우스의 편집 디자인 철학 → 현대 퍼블리싱 UI", link:"https://medium.com", color:"#6e9ec8" },
+    { name:"Helvetica Now 서체", desc:"르네상스 타이포그래피 체계가 디지털 시대 서체로 진화", link:"https://ko.wikipedia.org/wiki/헬베티카", color:"#6e9ec8" },
+  ],
+
+  // 05 바로크
+  "바로크": [
+    { name:"베르사체 (Versace) 광고", desc:"극적 조명·감정 표현을 럭셔리 패션 광고 문법으로 계승", link:"https://ko.wikipedia.org/wiki/베르사체", color:"#c86e8a" },
+    { name:"Yayoi Kusama × Louis Vuitton", desc:"극적 시각 연출 + 반복 패턴의 현대적 결합", link:"https://ko.wikipedia.org/wiki/루이_비통", color:"#c86e8a" },
+  ],
+  "로코코": [
+    { name:"까르띠에 (Cartier) 패키지", desc:"로코코 곡선·파스텔·호화로움이 럭셔리 패키지 디자인의 DNA", link:"https://ko.wikipedia.org/wiki/까르티에", color:"#c86e8a" },
+    { name:"Wes Anderson 영화 색감", desc:"파스텔 팔레트 + 대칭 구도가 로코코 미학의 현대 영화 해석", link:"https://ko.wikipedia.org/wiki/웨스_앤더슨", color:"#c86e8a" },
+  ],
+  "계몽주의 시각문화": [
+    { name:"인포그래픽 (데이터 저널리즘)", desc:"백과전서 삽화 → NYT·The Economist 데이터 시각화로 계승", link:"https://en.wikipedia.org/wiki/Infographic", color:"#c86e8a" },
+    { name:"Wikipedia 시각 구조", desc:"계몽주의 정보 대중화 철학이 인터넷 백과사전 디자인으로", link:"https://ko.wikipedia.org/wiki/위키백과", color:"#c86e8a" },
+  ],
+
+  // 06 산업
+  "바우하우스": [
+    { name:"애플 (Apple) 제품 디자인", desc:"바우하우스 → 브라운(디터 람스) → 조니 아이브 → iPhone/Mac", link:"https://ko.wikipedia.org/wiki/애플_(기업)", color:"#6ec8a9" },
+    { name:"무인양품 (MUJI)", desc:"기능주의 미니멀리즘을 생활용품 전반으로 확장한 현대판 바우하우스", link:"https://ko.wikipedia.org/wiki/무인양품", color:"#6ec8a9" },
+    { name:"삼성 갤럭시 One UI", desc:"그리드 기반 UI 시스템이 스마트폰 인터페이스로 계승", link:"https://ko.wikipedia.org/wiki/삼성전자", color:"#6ec8a9" },
+  ],
+  "아르누보": [
+    { name:"록옥탄 (Rococo) 뷰티 브랜드들", desc:"유기적 곡선 일러스트가 자연주의 뷰티 패키지의 표준이 됨", link:"https://en.wikipedia.org/wiki/Art_Nouveau", color:"#6ec8a9" },
+    { name:"Spotify 커버 아트 트렌드", desc:"아르누보 곡선·식물 패턴이 음악 앨범 아트에서 재유행", link:"https://ko.wikipedia.org/wiki/스포티파이", color:"#6ec8a9" },
+  ],
+  "아르데코": [
+    { name:"샤넬 No.5 보틀 (현재까지)", desc:"1921년 아르데코 병 디자인을 100년간 유지 — 럭셔리 아이콘", link:"https://ko.wikipedia.org/wiki/샤넬_No._5", color:"#6ec8a9" },
+    { name:"Great Gatsby 영화 비주얼", desc:"아르데코 기하학·황금 컬러가 20세기 재현 영화의 표준 미장센", link:"https://ko.wikipedia.org/wiki/위대한_개츠비_(2013년_영화)", color:"#6ec8a9" },
+  ],
+  "데 스틸": [
+    { name:"몬드리안 패션 (Yves Saint Laurent)", desc:"1965년 몬드리안 드레스 → 현재까지 패션 콜라보 레퍼런스", link:"https://ko.wikipedia.org/wiki/이브_생_로랑_(패션_하우스)", color:"#6ec8a9" },
+    { name:"Google 로고 컬러 시스템", desc:"1차색 + 비율 구조가 구글 브랜드 아이덴티티의 기반", link:"https://ko.wikipedia.org/wiki/구글", color:"#6ec8a9" },
+  ],
+  "구성주의": [
+    { name:"슈프림 (Supreme) 박스 로고", desc:"대각선 구성 + 단색 타이포 — 구성주의 포스터 문법의 직접 계승", link:"https://en.wikipedia.org/wiki/Supreme_(brand)", color:"#6ec8a9" },
+    { name:"OBey 아트 (Shepard Fairey)", desc:"혁명적 그래픽·정치 포스터 문법을 현대 스트리트 아트로 계승", link:"https://en.wikipedia.org/wiki/Shepard_Fairey", color:"#6ec8a9" },
+  ],
+  "국제주의 스타일": [
+    { name:"에어비앤비 (Airbnb) 브랜딩", desc:"헬베티카 계보 + 그리드 기반 — 스위스 스타일의 테크 기업 적용", link:"https://ko.wikipedia.org/wiki/에어비앤비", color:"#6ec8a9" },
+    { name:"구글 (Google) Material Design", desc:"국제주의 그리드 체계를 디지털 UI 표준으로 재정립", link:"https://ko.wikipedia.org/wiki/머티리얼_디자인", color:"#6ec8a9" },
+  ],
+  "모더니즘": [
+    { name:"허먼 밀러 (Herman Miller)", desc:"바르셀로나 체어 정신 → 현대 오피스 퍼니처의 기능주의 표준", link:"https://en.wikipedia.org/wiki/Herman_Miller", color:"#6ec8a9" },
+    { name:"이케아 (IKEA) 가구 철학", desc:"모더니즘 기능주의를 대량생산·대중화로 완성한 현대판", link:"https://ko.wikipedia.org/wiki/이케아", color:"#6ec8a9" },
+  ],
+  "초현실주의": [
+    { name:"Midjourney · DALL-E AI 이미지", desc:"초현실주의 무의식 시각화 → AI 생성 이미지 미학의 직접 계보", link:"https://ko.wikipedia.org/wiki/미드저니", color:"#6ec8a9" },
+    { name:"마그리트 × 샤넬 광고", desc:"이것은 파이프가 아니다 문법이 럭셔리 광고 초현실 비주얼로", link:"https://ko.wikipedia.org/wiki/샤넬", color:"#6ec8a9" },
+  ],
+  "큐비즘": [
+    { name:"Pablo & Rusty's 카페 로고", desc:"다시점 기하학 구성이 현대 브랜드 일러스트레이션에 적용", link:"https://en.wikipedia.org/wiki/Cubism", color:"#6ec8a9" },
+    { name:"콜라주 타이포그래피 트렌드", desc:"큐비즘 콜라주 문법이 2020s 그래픽 디자인 트렌드로 부활", link:"https://en.wikipedia.org/wiki/Cubism", color:"#6ec8a9" },
+  ],
+
+  // 07 포스트모던
+  "미드센추리 모던": [
+    { name:"CB2 · 웨스트 엘름 가구", desc:"임스 체어 스타일이 현대 라이프스타일 리테일의 주류", link:"https://en.wikipedia.org/wiki/West_Elm", color:"#c8b86e" },
+    { name:"매드맨 (Mad Men) 비주얼", desc:"1960s 브랜딩·광고 미학을 현대 미디어가 레퍼런스로 소환", link:"https://ko.wikipedia.org/wiki/매드맨", color:"#c8b86e" },
+  ],
+  "팝아트": [
+    { name:"슈프림 (Supreme)", desc:"워홀 × 캠벨 수프 DNA → 스트리트 브랜드 콜라보 문화의 시조", link:"https://en.wikipedia.org/wiki/Supreme_(brand)", color:"#c8b86e" },
+    { name:"카우스 (KAWS) × 아디다스", desc:"팝아트 아이콘을 스포츠 브랜드 콜라보로 계승", link:"https://en.wikipedia.org/wiki/KAWS", color:"#c8b86e" },
+  ],
+  "포스트모더니즘": [
+    { name:"Brutalist Web Design 트렌드", desc:"해체주의 레이아웃이 2020s 실험적 웹 디자인으로 부활", link:"https://en.wikipedia.org/wiki/Brutalist_architecture", color:"#c8b86e" },
+    { name:"블룸버그 비즈니스위크 커버", desc:"카슨의 해체 타이포 정신이 현대 매거진 커버 디자인으로 계승", link:"https://ko.wikipedia.org/wiki/블룸버그_비즈니스위크", color:"#c8b86e" },
+  ],
+  "멤피스 그룹": [
+    { name:"카카오 이모티콘 컬러 시스템", desc:"하이컨트라스트 + 카오스 패턴이 한국 디지털 감성으로 흡수", link:"https://ko.wikipedia.org/wiki/카카오", color:"#c8b86e" },
+    { name:"Y2K 패션 (2020s 부활)", desc:"멤피스 네온·기하학 패턴이 Z세대 레트로 패션으로 재소환", link:"https://en.wikipedia.org/wiki/Y2K_fashion", color:"#c8b86e" },
+  ],
+  "해체주의": [
+    { name:"자하 하디드 아키텍츠 (현재)", desc:"비정형 건축 철학이 전 세계 문화시설·오피스 빌딩 표준으로", link:"https://ko.wikipedia.org/wiki/자하_하디드_아키텍츠", color:"#c8b86e" },
+    { name:"Figma Auto Layout", desc:"해체 → 재구성 논리가 디자인 툴의 컴포넌트 구조로 흡수", link:"https://ko.wikipedia.org/wiki/피그마_(소프트웨어)", color:"#c8b86e" },
+  ],
+  "미니멀리즘": [
+    { name:"애플 (Apple) 전 제품군", desc:"디터 람스 10계명 → 조니 아이브 → 아이폰 디자인 DNA", link:"https://ko.wikipedia.org/wiki/애플_(기업)", color:"#c8b86e" },
+    { name:"무인양품 (MUJI) 전 제품군", desc:"미니멀리즘 생활철학을 리테일 브랜드로 구현한 현대 교과서", link:"https://ko.wikipedia.org/wiki/무인양품", color:"#c8b86e" },
+  ],
+  "초기 디지털 디자인": [
+    { name:"Figma · Sketch 아이콘 시스템", desc:"수잔 케어의 맥 아이콘 문법이 현대 UI 아이콘 설계의 원형", link:"https://ko.wikipedia.org/wiki/피그마_(소프트웨어)", color:"#c8b86e" },
+    { name:"iOS · macOS UI", desc:"1984년 맥 GUI가 40년간 진화해 현재 스마트폰 UI의 기반", link:"https://ko.wikipedia.org/wiki/IOS", color:"#c8b86e" },
+  ],
+  "추상표현주의": [
+    { name:"캄 (Calm) 앱 비주얼", desc:"로스코 컬러 필드 → 명상·수면 앱의 추상 배경 미학으로", link:"https://en.wikipedia.org/wiki/Calm_(app)", color:"#c86e8a" },
+    { name:"Spotify 캔버스 애니메이션", desc:"폴록 액션페인팅 감성이 음악 스트리밍 비주얼 아이덴티티로", link:"https://ko.wikipedia.org/wiki/스포티파이", color:"#c86e8a" },
+  ],
+  "펑크 그래픽": [
+    { name:"슈프림 (Supreme) DIY 감성", desc:"펑크 진(Zine) 문화가 스트리트웨어 브랜딩의 원형으로", link:"https://en.wikipedia.org/wiki/Supreme_(brand)", color:"#c8b86e" },
+    { name:"빌리 아일리시 비주얼 아이덴티티", desc:"DIY 그래픽 + 반문화 감성을 팝 아이콘 브랜딩으로 계승", link:"https://ko.wikipedia.org/wiki/빌리_아일리시", color:"#c8b86e" },
+  ],
+};
+// ══════════════════════════════════════════════════════
+// ✏️ 수정 구역 끝
+// ══════════════════════════════════════════════════════
+
+// ── DATA ──────────────────────────────────────────────
+// links: { wiki, googleArt, youtube, search }
+// imgs: [ { src (구글아트 임베드), label, link } ]
+
+const ERAS = [
+  {
+    num:"01",name:"선사 · 자연 · 생존 시대",period:"기원전 40,000 ~ 기원전 3,000",color:"#c8a96e",
+    bg:["석기·불·직조","부족 공동체·수렵채집","자연 숭배·주술적 세계관"],
+    next:"잉여 생산 → 정착 → 문명 발생 → 문자·권력 시각화 필요",
+    movements:[
+      {name:"생존 중심 조형",work:"아슐리안 주먹도끼 · 뼈바늘",modern:"에르고노믹 디자인 · 기능주의",art:false,color:"#c8a96e",
+       links:{wiki:"https://ko.wikipedia.org/wiki/석기_시대",googleArt:"https://artsandculture.google.com/search?q=prehistoric+tools",youtube:"https://www.youtube.com/results?search_query=석기시대+도구+디자인"},
+       imgs:[{label:"아슐리안 주먹도끼",q:"acheulean hand axe"},{label:"선사시대 도구",q:"prehistoric stone tools"}],
+       trends:[{name:"기능 중심 형태",techs:["석기 가공","뼈 조각","가죽 가공"]},{name:"생존 최적화 형태",techs:["석기 가공","자연 재료 조합"]}]},
+      {name:"자연 모방 조형",work:"빌렌도르프의 비너스 · 동물형 토우",modern:"바이오미미크리 디자인 · 유기적 형태",art:false,color:"#c8a96e",
+       links:{wiki:"https://ko.wikipedia.org/wiki/빌렌도르프의_비너스",googleArt:"https://artsandculture.google.com/asset/venus-of-willendorf",youtube:"https://www.youtube.com/results?search_query=venus+of+willendorf"},
+       imgs:[{label:"빌렌도르프의 비너스",q:"venus of willendorf"},{label:"동물형 조각",q:"paleolithic animal sculpture"}],
+       trends:[{name:"동물 형상화",techs:["동굴벽화","자연 안료","조각"]},{name:"자연 숭배",techs:["점토 성형","조각","자연 재료 조합"]}]},
+      {name:"주술적 상징주의",work:"라스코 동굴벽화 · 알타미라 동굴벽화",modern:"브랜드 상징 체계 · 로고 심볼리즘",art:false,color:"#c8a96e",
+       links:{wiki:"https://ko.wikipedia.org/wiki/라스코_동굴",googleArt:"https://artsandculture.google.com/story/lascaux-cave/",youtube:"https://www.youtube.com/results?search_query=lascaux+cave+paintings"},
+       imgs:[{label:"라스코 동굴벽화",q:"lascaux cave paintings"},{label:"알타미라 동굴벽화",q:"altamira cave paintings"}],
+       trends:[{name:"동물 형상화",techs:["동굴벽화","자연 안료"]},{name:"부족 상징",techs:["자연 안료","패턴 새기기"]},{name:"추상 패턴",techs:["패턴 새기기","동굴벽화"]}]},
+      {name:"부족 장식 문화",work:"채색 토기 · 패총 장신구",modern:"에스닉 패턴 · 부족 문양 패션",art:false,color:"#c8a96e",
+       links:{wiki:"https://ko.wikipedia.org/wiki/신석기_시대",googleArt:"https://artsandculture.google.com/search?q=neolithic+pottery",youtube:"https://www.youtube.com/results?search_query=neolithic+pottery+design"},
+       imgs:[{label:"신석기 토기",q:"neolithic pottery decoration"},{label:"원시 장신구",q:"prehistoric jewelry ornament"}],
+       trends:[{name:"반복 패턴",techs:["직조","패턴 새기기"]},{name:"의식용 장식",techs:["토기 제작","원시 염색"]},{name:"신체 장식",techs:["뼈 조각","가죽 가공"]}]},
+      {name:"원시 조형주의",work:"스톤헨지 · 고인돌",modern:"랜드마크 건축 · 기념비적 조형",art:false,color:"#c8a96e",
+       links:{wiki:"https://ko.wikipedia.org/wiki/스톤헨지",googleArt:"https://artsandculture.google.com/asset/stonehenge",youtube:"https://www.youtube.com/results?search_query=stonehenge+megalith"},
+       imgs:[{label:"스톤헨지",q:"stonehenge"},{label:"고인돌 돌멘",q:"dolmen megalith"}],
+       trends:[{name:"집단 상징화",techs:["조각","자연 재료 조합"]},{name:"추상 패턴",techs:["패턴 새기기","조각"]}]},
+      {name:"의례 중심 시각문화",work:"의례용 토기 · 암각화",modern:"브랜드 의례화 · 패키지 언박싱 경험",art:false,color:"#c8a96e",
+       links:{wiki:"https://ko.wikipedia.org/wiki/암각화",googleArt:"https://artsandculture.google.com/search?q=rock+art+petroglyph",youtube:"https://www.youtube.com/results?search_query=petroglyph+rock+art"},
+       imgs:[{label:"암각화",q:"petroglyph rock art"},{label:"의례용 토기",q:"ritual pottery ancient"}],
+       trends:[{name:"의식용 장식",techs:["토기 제작","점토 성형"]},{name:"부족 상징",techs:["패턴 새기기","자연 안료"]},{name:"집단 상징화",techs:["조각","자연 재료 조합"]}]},
+    ]
+  },
+  {
+    num:"02",name:"고대 문명 시대",period:"기원전 3,000 ~ 476",color:"#c8816e",
+    bg:["금속·문자·건축","국가·왕권·신분제","신화·신성·권력의 시각화"],
+    next:"로마 붕괴 → 교회 권력 부상 → 종교 중심 시각문화",
+    movements:[
+      {name:"이집트 양식",person:"임호텝 (건축가)",work:"기자 피라미드 · 투탕카멘 황금 마스크 · 로제타석",modern:"기념비적 브랜딩 · 황금비 활용 레이아웃",art:false,color:"#c8816e",
+       links:{wiki:"https://ko.wikipedia.org/wiki/고대_이집트_미술",googleArt:"https://artsandculture.google.com/search?q=ancient+egypt",youtube:"https://www.youtube.com/results?search_query=ancient+egypt+art+design"},
+       imgs:[{label:"기자 피라미드",q:"giza pyramids"},{label:"투탕카멘 황금 마스크",q:"tutankhamun golden mask"}],
+       trends:[{name:"왕권 시각화",techs:["상형문자 조각","벽면 채색","금속 세공"]},{name:"신성성 표현",techs:["채색 조각","파피루스 기록"]},{name:"권력 상징화",techs:["석조 건축","부조 조각"]}]},
+      {name:"그리스 고전주의",person:"피디아스 (조각가) · 익티노스 (건축가)",work:"파르테논 신전 · 밀로의 비너스 · 그리스 도기화",modern:"황금비·그리드·비례 시스템 → 현대 타이포그래피",art:false,color:"#c8816e",
+       links:{wiki:"https://ko.wikipedia.org/wiki/고대_그리스_미술",googleArt:"https://artsandculture.google.com/search?q=ancient+greek+art",youtube:"https://www.youtube.com/results?search_query=greek+classical+art+design"},
+       imgs:[{label:"파르테논 신전",q:"parthenon athens"},{label:"밀로의 비너스",q:"venus de milo"}],
+       trends:[{name:"황금비",techs:["비례 설계","건축 축선 설계"]},{name:"대칭 구조",techs:["석조 건축","기둥 구조"]},{name:"신화 시각화",techs:["도자기 제작","채색 조각"]}]},
+      {name:"헬레니즘",person:"리시포스 (조각가)",work:"사모트라케의 니케 · 라오콘 군상",modern:"Nike 브랜드 네이밍·로고 원형",art:false,color:"#c8816e",
+       links:{wiki:"https://ko.wikipedia.org/wiki/헬레니즘_미술",googleArt:"https://artsandculture.google.com/asset/winged-victory-of-samothrace",youtube:"https://www.youtube.com/results?search_query=winged+victory+samothrace"},
+       imgs:[{label:"사모트라케의 니케",q:"winged victory samothrace"},{label:"라오콘 군상",q:"laocoon group sculpture"}],
+       trends:[{name:"영웅 서사 표현",techs:["부조 조각","채색 조각"]},{name:"감정적 신체 표현",techs:["청동 주조","부조 조각"]}]},
+      {name:"로마 클래식",person:"비트루비우스 (건축 이론가)",work:"콜로세움 · 트라야누스 기둥 · 판테온",modern:"도시 그리드 설계 · 인프라 디자인",art:false,color:"#c8816e",
+       links:{wiki:"https://ko.wikipedia.org/wiki/로마_미술",googleArt:"https://artsandculture.google.com/search?q=roman+architecture",youtube:"https://www.youtube.com/results?search_query=roman+colosseum+architecture"},
+       imgs:[{label:"콜로세움",q:"roman colosseum"},{label:"판테온 로마",q:"pantheon rome interior"}],
+       trends:[{name:"권력 상징화",techs:["석조 건축","부조 조각"]},{name:"화폐 상징화",techs:["화폐 주조 디자인","인장 조각"]},{name:"도시 시각문화",techs:["모자이크","프레스코"]}]},
+      {name:"메소포타미아 양식",work:"우르의 지구라트 · 함무라비 법전 비석",modern:"정보 위계 시각화 · 법·규범의 타이포그래피",art:false,color:"#c8816e",
+       links:{wiki:"https://ko.wikipedia.org/wiki/메소포타미아_미술",googleArt:"https://artsandculture.google.com/search?q=mesopotamia+art",youtube:"https://www.youtube.com/results?search_query=mesopotamia+art+history"},
+       imgs:[{label:"우르의 지구라트",q:"ziggurat of ur"},{label:"함무라비 법전",q:"hammurabi stele"}],
+       trends:[{name:"문자 시각화",techs:["부조 조각","인장 조각"]},{name:"권력 상징화",techs:["석조 건축","부조 조각"]}]},
+      {name:"페르시아 양식",work:"페르세폴리스 궁전 · 다리우스 인장",modern:"패턴 텍스타일 · 카펫 디자인",art:false,color:"#c8816e",
+       links:{wiki:"https://ko.wikipedia.org/wiki/페르세폴리스",googleArt:"https://artsandculture.google.com/search?q=persepolis",youtube:"https://www.youtube.com/results?search_query=persepolis+ancient+persia"},
+       imgs:[{label:"페르세폴리스",q:"persepolis relief sculpture"},{label:"페르시아 패턴",q:"ancient persian carpet pattern"}],
+       trends:[{name:"자연 상징 패턴",techs:["벽면 채색","유약 기법"]},{name:"권력 인장 문화",techs:["인장 조각","금속 세공"]}]},
+      {name:"초기 중국 양식",work:"진시황 병마용 · 청동 정(鼎)",modern:"동아시아 브랜드 정체성 · 한자 타이포그래피",art:false,color:"#c8816e",
+       links:{wiki:"https://ko.wikipedia.org/wiki/병마용",googleArt:"https://artsandculture.google.com/search?q=terracotta+army",youtube:"https://www.youtube.com/results?search_query=terracotta+army+china"},
+       imgs:[{label:"진시황 병마용",q:"terracotta army qin"},{label:"상나라 청동기",q:"shang dynasty bronze vessel"}],
+       trends:[{name:"권력 상징화",techs:["청동 주조","채색 조각"]},{name:"의례 중심 조형",techs:["청동 주조","도자기 제작"]}]},
+      {name:"인도 장식 양식",work:"아쇼카 석주 · 산치 대탑",modern:"만다라 패턴 · 명상 브랜딩",art:false,color:"#c8816e",
+       links:{wiki:"https://ko.wikipedia.org/wiki/산치",googleArt:"https://artsandculture.google.com/search?q=sanchi+stupa",youtube:"https://www.youtube.com/results?search_query=sanchi+stupa+art"},
+       imgs:[{label:"산치 대탑",q:"sanchi stupa"},{label:"인도 부조",q:"india ancient relief sculpture"}],
+       trends:[{name:"신성성 표현",techs:["부조 조각","석조 건축"]},{name:"기하학 패턴",techs:["벽면 채색","부조 조각"]}]},
+    ]
+  },
+  {
+    num:"03",name:"중세 시대",period:"476 ~ 1400",color:"#a96ec8",
+    bg:["성당 건축·유리 가공·필사 기술","교회 지배·봉건제·길드","신 중심 세계관·구원·내세"],
+    next:"흑사병·십자군 → 인간 중심 사유 시작 → 르네상스",
+    movements:[
+      {name:"비잔틴",person:"유스티니아누스 황제 (후원자)",work:"하기아 소피아 · 라벤나 모자이크",modern:"금·빛 배경 아이콘 디자인 · 플랫 아이콘 원형",art:false,color:"#a96ec8",
+       links:{wiki:"https://ko.wikipedia.org/wiki/비잔틴_미술",googleArt:"https://artsandculture.google.com/search?q=byzantine+art",youtube:"https://www.youtube.com/results?search_query=byzantine+art+mosaics"},
+       imgs:[{label:"하기아 소피아",q:"hagia sophia interior"},{label:"라벤나 모자이크",q:"ravenna mosaic byzantine"}],
+       trends:[{name:"종교 상징",techs:["모자이크","금박","이콘화(성상화)"]},{name:"빛의 신성성",techs:["금박","모자이크"]},{name:"성상 중심 표현",techs:["이콘화(성상화)","필사본 채색"]}]},
+      {name:"고딕",person:"쉬제르 대수도원장",work:"노트르담 대성당 · 샤르트르 성당 스테인드글라스",modern:"고딕 → 고딕 리바이벌 → 럭셔리 모노그램 → 루이비통 LV 패턴",art:false,color:"#a96ec8",
+       links:{wiki:"https://ko.wikipedia.org/wiki/고딕_미술",googleArt:"https://artsandculture.google.com/search?q=gothic+cathedral",youtube:"https://www.youtube.com/results?search_query=gothic+cathedral+architecture+design"},
+       imgs:[{label:"노트르담 대성당",q:"notre dame cathedral paris"},{label:"샤르트르 스테인드글라스",q:"chartres cathedral stained glass"}],
+       trends:[{name:"수직성 강조",techs:["첨탑 구조","성당 건축","석재 세공"]},{name:"스테인드글라스",techs:["스테인드글라스","채색 유리 제작"]},{name:"빛의 신성성",techs:["스테인드글라스","성당 건축"]}]},
+      {name:"이슬람 아트",work:"알함브라 궁전 · 아라베스크 타일",modern:"기하학 패턴 · 반복 모듈 디자인",art:false,color:"#a96ec8",
+       links:{wiki:"https://ko.wikipedia.org/wiki/이슬람_미술",googleArt:"https://artsandculture.google.com/search?q=alhambra+palace",youtube:"https://www.youtube.com/results?search_query=alhambra+islamic+pattern"},
+       imgs:[{label:"알함브라 궁전",q:"alhambra palace granada"},{label:"아라베스크 패턴",q:"arabesque geometric pattern islamic"}],
+       trends:[{name:"기하학 패턴",techs:["석재 세공","장식 서체"]},{name:"반복 패턴",techs:["석재 세공","모자이크"]},{name:"장식 문자",techs:["장식 서체","필사본 채색"]}]},
+      {name:"켈트 양식",work:"켈스의 서 · 켈트 십자가",modern:"인터레이스 패턴 · 매듭 일러스트레이션",art:false,color:"#a96ec8",
+       links:{wiki:"https://ko.wikipedia.org/wiki/켈스의_서",googleArt:"https://artsandculture.google.com/search?q=book+of+kells",youtube:"https://www.youtube.com/results?search_query=book+of+kells+illuminated"},
+       imgs:[{label:"켈스의 서",q:"book of kells illuminated manuscript"},{label:"켈트 십자가",q:"celtic cross interlace"}],
+       trends:[{name:"반복 패턴",techs:["필사본 채색","목판 조각"]},{name:"장식 문자",techs:["장식 서체","필사본 채색"]},{name:"문장 디자인",techs:["금박","목판 조각"]}]},
+      {name:"로마네스크",work:"피사 대성당 · 바이외 태피스트리",modern:"아치형 UI 요소 · 스톤 텍스처 브랜딩",art:false,color:"#a96ec8",
+       links:{wiki:"https://ko.wikipedia.org/wiki/로마네스크_미술",googleArt:"https://artsandculture.google.com/search?q=romanesque+architecture",youtube:"https://www.youtube.com/results?search_query=romanesque+architecture+history"},
+       imgs:[{label:"피사 대성당",q:"pisa cathedral romanesque"},{label:"바이외 태피스트리",q:"bayeux tapestry"}],
+       trends:[{name:"종교 건축 거대화",techs:["아치 구조","성당 건축","석재 세공"]},{name:"성인 이미지화",techs:["종교 조각","벽면 프레스코"]}]},
+      {name:"중세 장인 문화",work:"길드 문장 · 채색 필사본",modern:"아르티장 브랜딩 · 핸드메이드 감성",art:false,color:"#a96ec8",
+       links:{wiki:"https://ko.wikipedia.org/wiki/채식_사본",googleArt:"https://artsandculture.google.com/search?q=illuminated+manuscript",youtube:"https://www.youtube.com/results?search_query=medieval+illuminated+manuscript"},
+       imgs:[{label:"채색 필사본",q:"medieval illuminated manuscript gold"},{label:"중세 길드 문장",q:"medieval heraldry guild"}],
+       trends:[{name:"필사본 장식",techs:["필사본 채색","금박"]},{name:"문장 디자인",techs:["장식 서체","목판 조각"]}]},
+    ]
+  },
+  {
+    num:"04",name:"르네상스 시대",period:"1400 ~ 1600",color:"#6e9ec8",
+    bg:["활판 인쇄술·광학·해부학","상인 계급 부상·도시국가·후원 문화","인문주의·고전 부활·인간 중심"],
+    next:"절대왕정 강화 → 권위·감정의 극적 표현 → 바로크",
+    movements:[
+      {name:"전성기 르네상스",person:"레오나르도 다빈치 · 미켈란젤로 · 라파엘로",work:"시스티나 예배당 천장화 · 모나리자 · 비트루비우스 인체도",modern:"황금비 레이아웃 · 인체 비례 기반 타이포그래피",art:false,color:"#6e9ec8",
+       links:{wiki:"https://ko.wikipedia.org/wiki/르네상스_미술",googleArt:"https://artsandculture.google.com/asset/mona-lisa-raphael/",youtube:"https://www.youtube.com/results?search_query=renaissance+art+history+michelangelo"},
+       imgs:[{label:"모나리자",q:"mona lisa leonardo"},{label:"시스티나 천장화",q:"sistine chapel ceiling michelangelo"}],
+       trends:[{name:"인간 중심 표현",techs:["유화","해부학 스케치"]},{name:"원근법",techs:["원근법 드로잉","공간 구성"]},{name:"균형과 조화",techs:["비례 계산","원형 구도"]}]},
+      {name:"북유럽 르네상스",person:"알브레히트 뒤러 · 한스 홀바인",work:"뒤러의 자화상 · 멜랑콜리아 판화",modern:"정밀 일러스트레이션 · 판화 감성 그래픽",art:false,color:"#6e9ec8",
+       links:{wiki:"https://ko.wikipedia.org/wiki/알브레히트_뒤러",googleArt:"https://artsandculture.google.com/search?q=albrecht+durer",youtube:"https://www.youtube.com/results?search_query=albrecht+durer+art"},
+       imgs:[{label:"뒤러의 자화상",q:"durer self portrait"},{label:"멜랑콜리아",q:"durer melancholia engraving"}],
+       trends:[{name:"사실주의",techs:["세밀 묘사","유화"]},{name:"현실 묘사 강화",techs:["판화","광학 관찰"]}]},
+      {name:"초기 르네상스",person:"필리포 브루넬레스키 · 도나텔로 · 마사초",work:"피렌체 대성당 돔 · 다비드상",modern:"원근법 기반 공간 설계 · UI 깊이감",art:false,color:"#6e9ec8",
+       links:{wiki:"https://ko.wikipedia.org/wiki/필리포_브루넬레스키",googleArt:"https://artsandculture.google.com/search?q=florence+cathedral+dome",youtube:"https://www.youtube.com/results?search_query=brunelleschi+dome+florence"},
+       imgs:[{label:"피렌체 대성당 돔",q:"florence cathedral dome brunelleschi"},{label:"다비드상",q:"donatello david sculpture"}],
+       trends:[{name:"원근법",techs:["원근법 드로잉","공간 구성"]},{name:"고전 재해석",techs:["조각","비례 계산"]}]},
+      {name:"르네상스 인문주의",person:"에라스무스 · 알두스 마누티우스 (출판인)",brand:"알두스 마누티우스 출판사 (최초 상업 폰트·로고)",work:"알두스 출판사 서적 · 이탤릭체 개발",modern:"편집 디자인 · 타이포그래피 체계",art:false,color:"#6e9ec8",
+       links:{wiki:"https://ko.wikipedia.org/wiki/알두스_마누티우스",googleArt:"https://artsandculture.google.com/search?q=aldus+manutius",youtube:"https://www.youtube.com/results?search_query=history+of+typography+renaissance"},
+       imgs:[{label:"알두스 출판사 서적",q:"aldus manutius book italic"},{label:"르네상스 타이포그래피",q:"renaissance typography printing press"}],
+       trends:[{name:"인문주의",techs:["활판 인쇄","동판 인쇄"]},{name:"문자 시각화",techs:["활판 인쇄","판화"]}]},
+      {name:"매너리즘",person:"폰토르모 · 파르미자니노 · 엘 그레코",work:"긴 목의 마돈나 · 엘 그레코의 톨레도 풍경",modern:"과장된 비율 · 실험적 레이아웃",art:false,color:"#6e9ec8",
+       links:{wiki:"https://ko.wikipedia.org/wiki/매너리즘",googleArt:"https://artsandculture.google.com/search?q=mannerism+painting",youtube:"https://www.youtube.com/results?search_query=mannerism+art+history"},
+       imgs:[{label:"긴 목의 마돈나",q:"parmigianino madonna long neck"},{label:"엘 그레코 작품",q:"el greco toledo painting"}],
+       trends:[{name:"비례 중심 디자인",techs:["비례 계산","다층 회화 기법"]},{name:"공간 환영 표현",techs:["명암법","공간 구성"]}]},
+      {name:"르네상스 고전주의",person:"레온 바티스타 알베르티 (건축 이론)",work:"팔라초 루첼라이 · 산타 마리아 노벨라 파사드",modern:"모듈 그리드 · 비례 기반 건축·UI 설계",art:false,color:"#6e9ec8",
+       links:{wiki:"https://ko.wikipedia.org/wiki/레온_바티스타_알베르티",googleArt:"https://artsandculture.google.com/search?q=palazzo+rucellai",youtube:"https://www.youtube.com/results?search_query=leon+battista+alberti+architecture"},
+       imgs:[{label:"팔라초 루첼라이",q:"palazzo rucellai facade"},{label:"산타 마리아 노벨라",q:"santa maria novella facade"}],
+       trends:[{name:"고전 재해석",techs:["비례 계산","원형 구도"]},{name:"수학 기반 조형",techs:["비례 계산","공간 구성"]}]},
+    ]
+  },
+  {
+    num:"05",name:"바로크 · 로코코 · 계몽주의 시대",period:"1600 ~ 1780",color:"#c86e8a",
+    bg:["광학·건축 공학·직물 기술","절대왕정·귀족 문화·시민계급 태동","권위·감정·이성(계몽주의)"],
+    next:"시민혁명·산업혁명 → 상업 자본주의 발달·인쇄 매체 대중화·상업 미술 태동 → 기능 중심 디자인",
+    movements:[
+      {name:"바로크",person:"잔 로렌초 베르니니 · 페테르 파울 루벤스 · 카라바조",work:"성 베드로 광장 콜로나데 · 엑스터시의 성 테레사",modern:"극적 조명 연출 · 럭셔리 브랜드 공간 디자인",art:false,color:"#c86e8a",
+       links:{wiki:"https://ko.wikipedia.org/wiki/바로크_미술",googleArt:"https://artsandculture.google.com/search?q=baroque+art",youtube:"https://www.youtube.com/results?search_query=baroque+art+history+caravaggio"},
+       imgs:[{label:"엑스터시의 성 테레사",q:"bernini ecstasy saint teresa"},{label:"카라바조 명작",q:"caravaggio chiaroscuro painting"}],
+       trends:[{name:"극적 연출",techs:["천장 프레스코","조명 연출"]},{name:"빛과 그림자 대비",techs:["조명 연출","회화적 공간 구성"]},{name:"감정 표현",techs:["대리석 조각"]}]},
+      {name:"로코코",person:"프랑수아 부셰 · 장 오노레 프라고나르",brand:"마이센 · 세브르 (도자기)",work:"베르사유 거울의 방 · 마이센 도자기",modern:"곡선 UI · 파스텔 컬러 팔레트 · 럭셔리 패키지",art:false,color:"#c86e8a",
+       links:{wiki:"https://ko.wikipedia.org/wiki/로코코",googleArt:"https://artsandculture.google.com/search?q=rococo+art",youtube:"https://www.youtube.com/results?search_query=rococo+art+history"},
+       imgs:[{label:"베르사유 거울의 방",q:"versailles hall of mirrors"},{label:"마이센 도자기",q:"meissen porcelain rococo"}],
+       trends:[{name:"곡선 중심",techs:["곡선 가공","장식 몰딩"]},{name:"우아함 강조",techs:["금박 장식","화려한 텍스타일"]},{name:"호화로움",techs:["거울 연출","귀족 공예 제작"]}]},
+      {name:"신고전주의",person:"자크 루이 다비드 · 요한 요아힘 빙켈만",brand:"웨지우드 (도자기 브랜드)",work:"호라티우스 형제의 맹세 · 판테온(파리)",modern:"고전적 타이포그래피 · 국가 기관 CI",art:false,color:"#c86e8a",
+       links:{wiki:"https://ko.wikipedia.org/wiki/신고전주의",googleArt:"https://artsandculture.google.com/search?q=neoclassicism+art",youtube:"https://www.youtube.com/results?search_query=neoclassicism+art+history"},
+       imgs:[{label:"호라티우스 형제의 맹세",q:"oath horatii jacques louis david"},{label:"웨지우드 도자기",q:"wedgwood neoclassical jasperware"}],
+       trends:[{name:"고전 회귀 경향",techs:["대리석 조각"]},{name:"권위 시각화",techs:["왕실 인테리어 설계","금박 장식"]}]},
+      {name:"계몽주의 시각문화",person:"드니 디드로 (백과전서) · 윌리엄 호가스",work:"백과전서 삽화 · 호가스의 풍자 판화 시리즈",modern:"인포그래픽 · 정보 시각화 · 에디토리얼 디자인",art:false,color:"#c86e8a",
+       links:{wiki:"https://ko.wikipedia.org/wiki/백과전서_(디드로)",googleArt:"https://artsandculture.google.com/search?q=encyclopedie+diderot",youtube:"https://www.youtube.com/results?search_query=enlightenment+visual+culture+hogarth"},
+       imgs:[{label:"백과전서 삽화",q:"encyclopedie diderot illustration"},{label:"호가스 풍자화",q:"hogarth gin lane engraving"}],
+       trends:[{name:"정보 구조화 및 지식 대중화",techs:["삽화 인쇄","동판 인쇄"]},{name:"비판적 사회 서사",techs:["풍자 판화","동판 인쇄"]}]},
+      {name:"절대왕정 시각문화",person:"루이 14세 (후원자) · 샤를 르 브룅 (수석 화가)",work:"베르사유 궁전 · 루이 14세 초상화",modern:"국가·왕실 브랜딩 · 권위적 레이아웃",art:false,color:"#c86e8a",
+       links:{wiki:"https://ko.wikipedia.org/wiki/베르사유_궁전",googleArt:"https://artsandculture.google.com/search?q=palace+of+versailles",youtube:"https://www.youtube.com/results?search_query=palace+versailles+art+history"},
+       imgs:[{label:"베르사유 궁전",q:"palace versailles gardens aerial"},{label:"루이 14세 초상화",q:"louis XIV portrait hyacinthe rigaud"}],
+       trends:[{name:"권위 시각화",techs:["왕실 인테리어 설계","금박 장식"]},{name:"호화로움",techs:["거울 연출","화려한 텍스타일"]}]},
+    ]
+  },
+  {
+    num:"06",name:"산업혁명 · 근대 디자인 시대",period:"1780 ~ 1945",color:"#6ec8a9",
+    bg:["증기기관·인쇄·사진·철골 건축","노동자 계급·대중 소비·국민국가","산업화·기능주의·합리주의·진보주의"],
+    next:"2차 세계대전 종전 → 소비사회·미디어 폭발 → 포스트모던",
+    movements:[
+      {name:"낭만주의",person:"외젠 들라크루아 · 카스파르 다비드 프리드리히",work:"민중을 이끄는 자유의 여신 · 안개 바다 위의 방랑자",modern:"감성 브랜딩 · 자연 이미지 광고",art:false,color:"#6ec8a9",
+       links:{wiki:"https://ko.wikipedia.org/wiki/낭만주의",googleArt:"https://artsandculture.google.com/search?q=romanticism+art",youtube:"https://www.youtube.com/results?search_query=romanticism+art+history"},
+       imgs:[{label:"민중을 이끄는 자유의 여신",q:"liberty leading people delacroix"},{label:"안개 바다 위의 방랑자",q:"wanderer above sea fog friedrich"}],
+       trends:[{name:"감성 중심 표현",techs:["회화적 공간 구성","사진 인쇄"]},{name:"포스터 문화",techs:["리소그래피","포스터 인쇄"]}]},
+      {name:"공예미술운동",person:"윌리엄 모리스 · 존 러스킨",brand:"모리스 & Co. · 켐스콧 프레스",work:"모리스의 벽지 패턴 · 켐스콧 출판사 서적",modern:"핸드메이드 감성 · 아르티장 브랜딩",art:false,color:"#6ec8a9",
+       links:{wiki:"https://ko.wikipedia.org/wiki/공예미술운동",googleArt:"https://artsandculture.google.com/search?q=arts+crafts+movement",youtube:"https://www.youtube.com/results?search_query=arts+and+crafts+movement+william+morris"},
+       imgs:[{label:"모리스 벽지 패턴",q:"william morris wallpaper pattern"},{label:"켐스콧 서적",q:"kelmscott press book design"}],
+       trends:[{name:"장식 가치 복원",techs:["직조","목판 인쇄"]},{name:"초기 책 디자인",techs:["출판 디자인","목판 인쇄"]}]},
+      {name:"아르누보",person:"알폰스 무하 · 에크토르 기마르 · 루이 티파니",brand:"티파니 & Co.",work:"무하의 지스몽다 포스터 · 파리 메트로 입구",modern:"유기적 곡선 일러스트 · 뷰티 브랜드 패키지",art:false,color:"#6ec8a9",
+       links:{wiki:"https://ko.wikipedia.org/wiki/아르_누보",googleArt:"https://artsandculture.google.com/search?q=art+nouveau",youtube:"https://www.youtube.com/results?search_query=art+nouveau+history+mucha"},
+       imgs:[{label:"무하의 지스몽다 포스터",q:"mucha gismonda poster art nouveau"},{label:"파리 메트로 입구",q:"paris metro art nouveau guimard"}],
+       trends:[{name:"곡선 중심",techs:["리소그래피","포스터 인쇄"]},{name:"자연 상징 패턴",techs:["광고 아트워크","패키지 디자인"]}]},
+      {name:"바우하우스",person:"발터 그로피우스 · 라슬로 모호이너지 · 헤르베르트 바이어 · 마르셀 브로이어",work:"바실리 체어 · 바우하우스 타이포그래피 · 데사우 건물",modern:"바우하우스 → 브라운 → 애플 → 현대 UI 그리드 · 무인양품",art:false,color:"#6ec8a9",
+       links:{wiki:"https://ko.wikipedia.org/wiki/바우하우스",googleArt:"https://artsandculture.google.com/search?q=bauhaus",youtube:"https://www.youtube.com/results?search_query=bauhaus+design+history"},
+       imgs:[{label:"바실리 체어",q:"wassily chair breuer bauhaus"},{label:"바우하우스 타이포그래피",q:"bauhaus typography poster"}],
+       trends:[{name:"기능 중심 디자인",techs:["그리드 시스템","기능적 설계","표준화 생산"]},{name:"대량생산 제품",techs:["산업 생산 설계","대량 생산 공정"]},{name:"산세리프 확산",techs:["산세리프 타이포"]},{name:"구조 단순화",techs:["모듈형 구조","조립식 구조"]}]},
+      {name:"아르데코",person:"카상드르 · 에르테 · 탐라 드 렘피카",brand:"샤넬 No.5 병 디자인 · 까르띠에",work:"크라이슬러 빌딩 · 카상드르의 노르망디 포스터",modern:"럭셔리 브랜드 패키지 · 기하학 패턴 패션",art:false,color:"#6ec8a9",
+       links:{wiki:"https://ko.wikipedia.org/wiki/아르_데코",googleArt:"https://artsandculture.google.com/search?q=art+deco",youtube:"https://www.youtube.com/results?search_query=art+deco+design+history"},
+       imgs:[{label:"크라이슬러 빌딩",q:"chrysler building art deco"},{label:"카상드르 포스터",q:"cassandre normandie poster art deco"}],
+       trends:[{name:"기하학 패턴",techs:["아이소메트릭 구성","패키지 디자인"]},{name:"속도 표현",techs:["유선형 제품","산업 렌더링"]},{name:"대중 소비 시각화",techs:["광고 아트워크","포스터 인쇄"]}]},
+      {name:"데 스틸",person:"피에트 몬드리안 · 테오 반 두스뷔르흐 · 헤릿 리트벨트",work:"빨강·파랑·노랑의 구성 · 레드 블루 체어 · 슈뢰더 주택",modern:"미로 · 몬드리안 패션 · 그리드 기반 UI",art:false,color:"#6ec8a9",
+       links:{wiki:"https://ko.wikipedia.org/wiki/데_스틸",googleArt:"https://artsandculture.google.com/search?q=de+stijl+mondrian",youtube:"https://www.youtube.com/results?search_query=de+stijl+mondrian+art"},
+       imgs:[{label:"몬드리안 구성",q:"mondrian composition red blue yellow"},{label:"레드 블루 체어",q:"red blue chair rietveld"}],
+       trends:[{name:"기하학 그래픽",techs:["그리드 시스템","모듈형 구조"]},{name:"미니멀리즘",techs:["산세리프 타이포","그리드 시스템"]}]},
+      {name:"구성주의",person:"알렉산드르 로드첸코 · 엘 리시츠키 · 바르바라 스테파노바",work:"리시츠키의 붉은 쐐기로 백군을 쳐라 · 로드첸코 포스터",modern:"혁명적 그래픽 · 대각선 구성 · 정치 포스터 문법",art:false,color:"#6ec8a9",
+       links:{wiki:"https://ko.wikipedia.org/wiki/구성주의",googleArt:"https://artsandculture.google.com/search?q=russian+constructivism",youtube:"https://www.youtube.com/results?search_query=russian+constructivism+design"},
+       imgs:[{label:"리시츠키 포스터",q:"el lissitzky beat the whites red wedge"},{label:"로드첸코 포스터",q:"rodchenko constructivist poster"}],
+       trends:[{name:"선전 그래픽",techs:["사진 콜라주","몽타주","포스터 인쇄"]},{name:"추상 타이포그래피",techs:["산세리프 타이포"]},{name:"기하학 그래픽",techs:["아이소메트릭 구성"]}]},
+      {name:"국제주의 스타일",person:"요제프 뮐러 브로크만 · 막스 빌 · 아드리안 프루티거",brand:"헬베티카 → 아메리칸 항공·BMW·토요타 CI",work:"뮬러 브로크만의 무지카 비바 포스터 · 유니버스 서체",modern:"구글·에어비앤비·스포티파이 초기 타이포그래피",art:false,color:"#6ec8a9",
+       links:{wiki:"https://ko.wikipedia.org/wiki/국제_타이포그래피_양식",googleArt:"https://artsandculture.google.com/search?q=swiss+style+graphic+design",youtube:"https://www.youtube.com/results?search_query=helvetica+swiss+international+style"},
+       imgs:[{label:"뮬러 브로크만 포스터",q:"muller brockmann musica viva poster"},{label:"헬베티카 서체",q:"helvetica typeface graphic design"}],
+       trends:[{name:"국제 시각언어",techs:["그리드 시스템","산세리프 타이포"]},{name:"산세리프 확산",techs:["산세리프 타이포","기계 인쇄"]}]},
+      {name:"모더니즘",person:"르 코르뷔지에 · 루트비히 미스 반 데어 로에",work:"빌라 사부아 · 바르셀로나 파빌리온 · 바르셀로나 체어",modern:"미니멀리즘 인테리어 · 무인양품 · 허먼 밀러",art:false,color:"#6ec8a9",
+       links:{wiki:"https://ko.wikipedia.org/wiki/근대_건축",googleArt:"https://artsandculture.google.com/search?q=villa+savoye+le+corbusier",youtube:"https://www.youtube.com/results?search_query=modernism+architecture+le+corbusier"},
+       imgs:[{label:"빌라 사부아",q:"villa savoye le corbusier"},{label:"바르셀로나 파빌리온",q:"barcelona pavilion mies van der rohe"}],
+       trends:[{name:"기능 중심 디자인",techs:["기능적 설계","산업 생산 설계"]},{name:"미니멀리즘",techs:["산세리프 타이포","그리드 시스템"]},{name:"구조 단순화",techs:["철제 가공","유리 가공"]}]},
+      {name:"다다이즘",person:"마르셀 뒤샹 · 한나 회흐 · 쿠르트 슈비터스",work:"샘(변기) · 다다 포토몽타주 시리즈",modern:"콜라주 그래픽 · 안티 디자인 · 펑크 포스터",art:true,color:"#6ec8a9",
+       links:{wiki:"https://ko.wikipedia.org/wiki/다다이즘",googleArt:"https://artsandculture.google.com/search?q=dada+art",youtube:"https://www.youtube.com/results?search_query=dada+art+history+duchamp"},
+       imgs:[{label:"뒤샹의 샘",q:"duchamp fountain readymade"},{label:"한나 회흐 포토몽타주",q:"hannah hoch photomontage dada"}],
+       trends:[{name:"추상 표현",techs:["사진 콜라주","몽타주"]},{name:"안티 디자인",techs:["사진 콜라주","실크스크린"]}]},
+      {name:"초현실주의",person:"살바도르 달리 · 르네 마그리트 · 만 레이",brand:"엘사 스키아파렐리 (패션) · 달리×샤넬 협업",work:"기억의 지속 · 이것은 파이프가 아니다 · 만 레이 사진",modern:"광고 초현실 비주얼 · AI 이미지 생성 미학",art:true,color:"#6ec8a9",
+       links:{wiki:"https://ko.wikipedia.org/wiki/초현실주의",googleArt:"https://artsandculture.google.com/asset/the-persistence-of-memory-salvador-dali/",youtube:"https://www.youtube.com/results?search_query=surrealism+art+history+dali"},
+       imgs:[{label:"기억의 지속",q:"dali persistence of memory"},{label:"이것은 파이프가 아니다",q:"magritte treachery of images pipe"}],
+       trends:[{name:"추상 표현",techs:["사진 콜라주","사진 인쇄"]},{name:"미래 이미지",techs:["산업 렌더링","포스터 인쇄"]}]},
+      {name:"큐비즘",person:"파블로 피카소 · 조르주 브라크 · 후안 그리스",work:"아비뇽의 처녀들 · 기타 연작",modern:"다시점 레이아웃 · 콜라주 타이포그래피",art:true,color:"#6ec8a9",
+       links:{wiki:"https://ko.wikipedia.org/wiki/입체주의",googleArt:"https://artsandculture.google.com/search?q=cubism+picasso",youtube:"https://www.youtube.com/results?search_query=cubism+art+history+picasso"},
+       imgs:[{label:"아비뇽의 처녀들",q:"les demoiselles d avignon picasso"},{label:"브라크 큐비즘",q:"braque cubism guitar"}],
+       trends:[{name:"추상 표현",techs:["사진 콜라주","몽타주"]},{name:"기하학 그래픽",techs:["아이소메트릭 구성"]}]},
+      {name:"표현주의",person:"에드바르 뭉크 · 에른스트 루트비히 키르히너",work:"절규 · 독일 표현주의 영화 포스터",modern:"감성적 타이포그래피 · 공포·긴장 광고 비주얼",art:true,color:"#6ec8a9",
+       links:{wiki:"https://ko.wikipedia.org/wiki/표현주의",googleArt:"https://artsandculture.google.com/search?q=expressionism+munch",youtube:"https://www.youtube.com/results?search_query=expressionism+art+history"},
+       imgs:[{label:"뭉크의 절규",q:"edvard munch the scream"},{label:"독일 표현주의 포스터",q:"german expressionism film poster cabinet caligari"}],
+       trends:[{name:"감성 중심 표현",techs:["포스터 인쇄","광고 아트워크"]},{name:"포스터 문화",techs:["리소그래피","포스터 인쇄"]}]},
+    ]
+  },
+  {
+    num:"07",name:"근대 후기 · 포스트모던 시대",period:"1945 ~ 1990s",color:"#c8b86e",
+    bg:["TV·복사기·초기 컴퓨터·비디오","소비사회·대중문화·냉전·반문화","다원주의·해체·반(反)권위·개인화"],
+    next:"인터넷·GUI·네트워크 사회 등장 → 디지털 경험 설계 시대",
+    movements:[
+      {name:"미드센추리 모던",person:"찰스 & 레이 임스 · 폴 랜드 · 사울 바스",brand:"IBM · CBS · UPS (폴 랜드 디자인)",work:"임스 체어 · IBM 로고 · 히치콕 영화 타이틀",modern:"기업 아이덴티티 시스템 · 모던 가구 디자인",art:false,color:"#c8b86e",
+       links:{wiki:"https://ko.wikipedia.org/wiki/미드센추리_모던",googleArt:"https://artsandculture.google.com/search?q=mid+century+modern+design",youtube:"https://www.youtube.com/results?search_query=mid+century+modern+design+eames"},
+       imgs:[{label:"임스 체어",q:"eames lounge chair mid century"},{label:"폴 랜드 IBM 로고",q:"paul rand IBM logo design"}],
+       trends:[{name:"브랜드 아이덴티티 강화",techs:["CI 시스템","브랜딩 시스템"]},{name:"컬러 블록",techs:["오프셋 인쇄","컬러 분판"]}]},
+      {name:"스위스 스타일",person:"요제프 뮐러 브로크만 · 아민 호프만 · 막스 미딩어",brand:"헬베티카 → 아메리칸 항공·BMW·토요타 CI",work:"뮬러 브로크만 포스터 · 헬베티카 서체",modern:"구글·에어비앤비·스포티파이 초기 타이포그래피",art:false,color:"#c8b86e",
+       links:{wiki:"https://ko.wikipedia.org/wiki/국제_타이포그래피_양식",googleArt:"https://artsandculture.google.com/search?q=swiss+graphic+design",youtube:"https://www.youtube.com/results?search_query=swiss+style+graphic+design+helvetica"},
+       imgs:[{label:"뮬러 브로크만 포스터",q:"josef muller brockmann poster grid"},{label:"헬베티카",q:"helvetica typeface poster"}],
+       trends:[{name:"강한 그리드",techs:["모듈형 그리드","포토타이포"]},{name:"질서 중심 레이아웃",techs:["포토타이포","디지털 타이포그래피"]}]},
+      {name:"팝아트",person:"앤디 워홀 · 로이 리히텐슈타인 · 리처드 해밀턴",brand:"앤디 워홀 × 캠벨 수프 콜라보",work:"캠벨 수프 캔 · 마릴린 먼로 실크스크린",modern:"슈프림 로고 · 팝 컬러 브랜딩 · 콜라보 문화",art:false,color:"#c8b86e",
+       links:{wiki:"https://ko.wikipedia.org/wiki/팝_아트",googleArt:"https://artsandculture.google.com/search?q=pop+art+warhol",youtube:"https://www.youtube.com/results?search_query=pop+art+history+warhol"},
+       imgs:[{label:"워홀 마릴린",q:"andy warhol marilyn monroe silkscreen"},{label:"캠벨 수프 캔",q:"andy warhol campbell soup can"}],
+       trends:[{name:"대중문화 차용",techs:["실크스크린","오프셋 인쇄"]},{name:"팝 컬러",techs:["컬러 분판","패키지 디자인"]},{name:"소비문화 시각화",techs:["패키지 디자인"]}]},
+      {name:"포스트모더니즘",person:"데이비드 카슨 · 에이프릴 그레이만 · 볼프강 바인가르트",work:"레이 건(Ray Gun) 매거진 · 카슨의 해체 타이포",modern:"실험적 웹 디자인 · 반규칙 레이아웃",art:false,color:"#c8b86e",
+       links:{wiki:"https://ko.wikipedia.org/wiki/포스트모더니즘",googleArt:"https://artsandculture.google.com/search?q=postmodern+graphic+design",youtube:"https://www.youtube.com/results?search_query=david+carson+postmodern+design"},
+       imgs:[{label:"레이 건 매거진",q:"ray gun magazine david carson"},{label:"포스트모던 타이포",q:"postmodern graphic design typography"}],
+       trends:[{name:"실험적 타이포",techs:["타이포 실험","잡지 레이아웃 혁신"]},{name:"시각 해체",techs:["레이어 중첩","시각 왜곡"]}]},
+      {name:"멤피스 그룹",person:"에토레 소트사스 · 마이클 그레이브스 · 나탈리 뒤 파스키에",work:"칼튼 책장 · 멤피스 패턴 텍스타일",modern:"카오스 패턴 · Y2K 미학 · 80s 레트로 트렌드",art:false,color:"#c8b86e",
+       links:{wiki:"https://ko.wikipedia.org/wiki/멤피스_그룹",googleArt:"https://artsandculture.google.com/search?q=memphis+group+design",youtube:"https://www.youtube.com/results?search_query=memphis+group+design+sottsass"},
+       imgs:[{label:"칼튼 책장",q:"carlton bookshelf ettore sottsass memphis"},{label:"멤피스 패턴",q:"memphis design pattern 80s"}],
+       trends:[{name:"네온 컬러",techs:["컬러 분판","오프셋 인쇄"]},{name:"플라스틱 미학",techs:["플라스틱 성형"]},{name:"하이컨트라스트 컬러",techs:["컬러 분판"]}]},
+      {name:"해체주의",person:"자하 하디드 · 프랭크 게리 · 다니엘 리베스킨트",work:"빌바오 구겐하임 · MAXXI 미술관",modern:"비정형 건축 · 파괴적 레이아웃 · 브루탈리즘 웹",art:false,color:"#c8b86e",
+       links:{wiki:"https://ko.wikipedia.org/wiki/해체주의_건축",googleArt:"https://artsandculture.google.com/search?q=guggenheim+bilbao+gehry",youtube:"https://www.youtube.com/results?search_query=deconstructivism+architecture+zaha+hadid"},
+       imgs:[{label:"빌바오 구겐하임",q:"guggenheim museum bilbao frank gehry"},{label:"자하 하디드 건축",q:"zaha hadid architecture MAXXI"}],
+       trends:[{name:"시각 해체",techs:["CAD 설계","시각 왜곡"]},{name:"비정형 구성",techs:["CAD 설계","산업 렌더링"]}]},
+      {name:"미니멀리즘",person:"디터 람스 · 마사요시 나카조",brand:"브라운 · 무인양품 · 뱅앤올룹슨",work:"브라운 제품 시리즈 · 나카조의 포스터",modern:"애플 디자인 · 앱 UI · 미니멀 브랜딩",art:false,color:"#c8b86e",
+       links:{wiki:"https://ko.wikipedia.org/wiki/미니멀리즘",googleArt:"https://artsandculture.google.com/search?q=dieter+rams+braun+design",youtube:"https://www.youtube.com/results?search_query=dieter+rams+ten+principles+design"},
+       imgs:[{label:"브라운 제품 시리즈",q:"dieter rams braun product design"},{label:"무인양품",q:"muji product minimal design"}],
+       trends:[{name:"구조 단순화",techs:["모듈형 그리드","브랜딩 시스템"]},{name:"기능 중심 디자인",techs:["산업 렌더링"]}]},
+      {name:"펑크 그래픽",person:"제이미 레이드 · 말콤 개럿",work:"섹스 피스톨즈 앨범 커버 · 영국 펑크 진(Zine)",modern:"DIY 그래픽 · 스트리트 브랜드 · 슈프림",art:false,color:"#c8b86e",
+       links:{wiki:"https://ko.wikipedia.org/wiki/펑크_록",googleArt:"https://artsandculture.google.com/search?q=punk+graphic+design",youtube:"https://www.youtube.com/results?search_query=punk+graphic+design+history+jamie+reid"},
+       imgs:[{label:"섹스 피스톨즈 커버",q:"sex pistols god save queen jamie reid"},{label:"펑크 진 그래픽",q:"punk zine collage graphic design"}],
+       trends:[{name:"DIY 그래픽",techs:["사진 편집","실험 인쇄"]},{name:"시각 해체",techs:["시각 왜곡","포토타이포"]}]},
+      {name:"초기 디지털 디자인",person:"수잔 케어 (애플 아이콘 디자이너) · 존 워녹 (어도비)",brand:"애플 매킨토시 · 어도비 · 앨더스(페이지메이커)",work:"매킨토시 최초 GUI 아이콘 · 어도비 일러스트레이터 v1",modern:"현대 GUI · 아이콘 디자인 · DTP 산업 전체",art:false,color:"#c8b86e",
+       links:{wiki:"https://ko.wikipedia.org/wiki/매킨토시",googleArt:"https://artsandculture.google.com/search?q=macintosh+1984",youtube:"https://www.youtube.com/results?search_query=susan+kare+apple+icon+design+history"},
+       imgs:[{label:"맥킨토시 GUI 아이콘",q:"susan kare macintosh icons original"},{label:"어도비 초기",q:"adobe illustrator early version 1980s"}],
+       trends:[{name:"디지털 인터페이스 초기화",techs:["초기 GUI 디자인","벡터 그래픽"]},{name:"컴퓨터 기반 그래픽",techs:["DTP(탁상출판) 시스템","PostScript 기술"]}]},
+      {name:"추상표현주의",person:"잭슨 폴록 · 마크 로스코 · 윌렘 데 쿠닝",work:"No.31 · 오렌지와 노랑 · 여인 시리즈",modern:"감성 브랜딩 · 추상 배경 비주얼 · 명상 앱 UI",art:true,color:"#c86e8a",
+       links:{wiki:"https://ko.wikipedia.org/wiki/추상_표현주의",googleArt:"https://artsandculture.google.com/search?q=abstract+expressionism+pollock",youtube:"https://www.youtube.com/results?search_query=abstract+expressionism+history+pollock"},
+       imgs:[{label:"잭슨 폴록",q:"jackson pollock drip painting"},{label:"마크 로스코",q:"mark rothko orange yellow color field"}],
+       trends:[{name:"자유로운 붓질 미학",techs:["비정형 텍스처","추상 일러스트레이션"]},{name:"무의식적 우연성",techs:["레이어 블렌딩"]}]},
+      {name:"아르 브뤼",person:"장 뒤뷔페 · 헨리 다거",work:"뒤뷔페의 오트 파트 시리즈",modern:"아웃사이더 아트 감성 · 핸드드로잉 브랜딩",art:true,color:"#c86e8a",
+       links:{wiki:"https://ko.wikipedia.org/wiki/아르_브뤼",googleArt:"https://artsandculture.google.com/search?q=art+brut+dubuffet",youtube:"https://www.youtube.com/results?search_query=art+brut+outsider+art+dubuffet"},
+       imgs:[{label:"뒤뷔페 오트 파트",q:"jean dubuffet art brut painting"},{label:"아웃사이더 아트",q:"outsider art raw brut"}],
+       trends:[{name:"비정형 구성",techs:["실험 인쇄","레이어 중첩"]},{name:"DIY 그래픽",techs:["사진 편집","실험 인쇄"]}]},
+      {name:"하이테크 디자인",person:"렌조 피아노 · 리처드 로저스 · 노먼 포스터",work:"퐁피두 센터 · 홍콩 상하이 은행 본사",modern:"테크 기업 오피스 디자인 · 구조 노출 인테리어",art:false,color:"#c8b86e",
+       links:{wiki:"https://ko.wikipedia.org/wiki/퐁피두_센터",googleArt:"https://artsandculture.google.com/search?q=centre+pompidou",youtube:"https://www.youtube.com/results?search_query=centre+pompidou+renzo+piano+high+tech"},
+       imgs:[{label:"퐁피두 센터",q:"centre pompidou paris exterior"},{label:"노먼 포스터 건축",q:"norman foster hong kong bank hsbc"}],
+       trends:[{name:"구조 노출",techs:["CAD 설계","산업 렌더링"]},{name:"포스트 산업 감성",techs:["전시 디자인"]}]},
+      {name:"사이키델릭 디자인",person:"빅터 모스코소 · 웨스 윌슨",work:"1960s 샌프란시스코 콘서트 포스터",modern:"음악 페스티벌 비주얼 · 사이키델릭 패션",art:false,color:"#c8b86e",
+       links:{wiki:"https://en.wikipedia.org/wiki/Psychedelic_art",googleArt:"https://artsandculture.google.com/search?q=psychedelic+poster+1960s",youtube:"https://www.youtube.com/results?search_query=psychedelic+poster+design+1960s"},
+       imgs:[{label:"사이키델릭 포스터",q:"psychedelic concert poster 1960s san francisco"},{label:"빅터 모스코소",q:"victor moscoso psychedelic poster"}],
+       trends:[{name:"네온 컬러",techs:["컬러 분판","오프셋 인쇄"]},{name:"시각 왜곡",techs:["시각 왜곡","타이포 실험"]}]},
+      {name:"개념미술 영향",person:"요셉 보이스 · 솔 르윗 · 로렌스 와이너",work:"사회적 조각 · 월 드로잉 시리즈",modern:"개념 중심 브랜딩 · 미니멀 카피라이팅",art:true,color:"#c86e8a",
+       links:{wiki:"https://ko.wikipedia.org/wiki/개념_미술",googleArt:"https://artsandculture.google.com/search?q=conceptual+art",youtube:"https://www.youtube.com/results?search_query=conceptual+art+history+sol+lewitt"},
+       imgs:[{label:"솔 르윗 월 드로잉",q:"sol lewitt wall drawing conceptual"},{label:"요셉 보이스",q:"joseph beuys social sculpture"}],
+       trends:[{name:"개념 중심 브랜딩",techs:["디지털 타이포그래피","브랜딩 시스템"]},{name:"미니멀 카피라이팅",techs:["브랜딩 시스템"]}]},
+    ]
+  },
+];
+
+
+// ── WHY / WHAT / HOW / NOW LAYER HELPERS ─────────────────────────────
+function escapeLayerText(value) {
+  return String(value ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
+function uniqueLayerItems(items) {
+  const seen = new Set();
+  return (items || [])
+    .map(v => String(v || '').trim())
+    .filter(Boolean)
+    .filter(v => {
+      if (seen.has(v)) return false;
+      seen.add(v);
+      return true;
+    });
+}
+
+function deriveLayerData(mov, era) {
+  const trendNames = uniqueLayerItems((mov.trends || []).map(t => t.name));
+  const techNames = uniqueLayerItems((mov.trends || []).flatMap(t => t.techs || []));
+
+  const whySource = mov.why || mov.philosophy || mov.belief || (era.bg || []).join(' · ');
+  const whatSource = trendNames.length ? `${mov.name} → ${trendNames.slice(0, 4).join(' · ')}` : mov.name;
+  const howSource = techNames.length ? techNames.slice(0, 5).join(' · ') : '기법 정보 없음';
+  const nowSource = mov.modern || '현대 연결 정보 없음';
+
+  return {
+    why: whySource,
+    what: whatSource,
+    how: howSource,
+    now: nowSource,
+    trends: trendNames,
+    techs: techNames,
+  };
+}
+
+function layerSummaryHTML(mov, era, compact=false) {
+  const layer = deriveLayerData(mov, era);
+  const trendChips = layer.trends.slice(0, compact ? 3 : 8)
+    .map(t => `<span class="layer-chip">${escapeLayerText(t)}</span>`).join('');
+  const techChips = layer.techs.slice(0, compact ? 4 : 10)
+    .map(t => `<span class="layer-chip">${escapeLayerText(t)}</span>`).join('');
+
+  if (compact) {
+    return `
+      <div class="layer-row"><div class="layer-key">WHY</div><div class="layer-value muted">${escapeLayerText(layer.why)}</div></div>
+      <div class="layer-row"><div class="layer-key">WHAT</div><div class="layer-value"><div class="layer-chips">${trendChips || escapeLayerText(mov.name)}</div></div></div>
+      <div class="layer-row"><div class="layer-key">HOW</div><div class="layer-value"><div class="layer-chips">${techChips || '기법 정보 없음'}</div></div></div>
+      <div class="layer-row"><div class="layer-key">NOW</div><div class="layer-value muted">${escapeLayerText(layer.now)}</div></div>
+    `;
+  }
+
+  return `
+    <div class="layer-row"><div class="layer-key">WHY</div><div class="layer-value muted">${escapeLayerText(layer.why)}</div></div>
+    <div class="layer-row"><div class="layer-key">WHAT</div><div class="layer-value">${escapeLayerText(layer.what)}<div class="layer-chips" style="margin-top:6px">${trendChips}</div></div></div>
+    <div class="layer-row"><div class="layer-key">HOW</div><div class="layer-value"><div class="layer-chips">${techChips || '기법 정보 없음'}</div></div></div>
+    <div class="layer-row"><div class="layer-key">NOW</div><div class="layer-value muted">${escapeLayerText(layer.now)}</div></div>
+  `;
+}
+
+function enrichDesignAtlasLayers(eras) {
+  (eras || []).forEach(era => {
+    (era.movements || []).forEach(mov => {
+      const layer = deriveLayerData(mov, era);
+      mov.layer = mov.layer || {
+        why: layer.why,
+        what: layer.what,
+        how: layer.how,
+        now: layer.now,
+      };
+    });
+  });
+  return eras;
+}
+
+// ── BUILD DOM ──────────────────────────────────────────
+function buildEraSection(era) {
+  const section = document.createElement('div');
+  section.className = 'era-section';
+
+  // Info sidebar
+  const info = document.createElement('div');
+  info.className = 'era-info-col';
+  info.style.color = era.color;
+  info.innerHTML = `
+    <div class="era-num">${era.num}</div>
+    <div class="era-name">${era.name}</div>
+    <div class="era-period">${era.period}</div>
+    <div class="era-bg">${era.bg.map(b=>`<span class="era-bg-pill">${b}</span>`).join('')}</div>
+    <div class="era-next-box" style="border-left:3px solid ${era.color}">
+      <span class="era-next-arrow">↓</span>
+      <span>${era.next}</span>
+    </div>
+  `;
+  section.appendChild(info);
+
+  // Movements row
+  const row = document.createElement('div');
+  row.className = 'movements-row';
+
+  era.movements.forEach(mov => {
+    const card = document.createElement('div');
+    card.className = 'mov';
+
+    // Header
+    const mhead = document.createElement('div');
+    mhead.className = 'mov-head';
+    let casesHtml = '';
+    if (mov.person) casesHtml += `<b>${mov.person}</b><br>`;
+    if (mov.work)   casesHtml += `<span style="color:var(--muted)">${mov.work}</span><br>`;
+    if (mov.brand)  casesHtml += `<span style="color:var(--muted)">${mov.brand}</span>`;
+    mhead.innerHTML = `
+      <div class="mov-dot" style="background:${mov.color}"></div>
+      <div class="mov-info">
+        ${mov.art ? '<span class="mov-art-tag">미술→디자인</span>' : ''}
+        <div class="mov-name" style="color:${mov.color}">${mov.name}</div>
+        <div class="mov-cases">${casesHtml}</div>
+        <div class="mov-modern" style="color:${mov.color};border-color:${mov.color}44">↗ ${mov.modern}</div>
+      </div>
+    `;
+    card.appendChild(mhead);
+
+    // WHY / WHAT / HOW / NOW summary on main card
+    const layerBox = document.createElement('div');
+    layerBox.className = 'layer-summary';
+    layerBox.innerHTML = layerSummaryHTML(mov, era, true);
+    card.appendChild(layerBox);
+
+    // Click hint
+    const hint = document.createElement('div');
+    hint.className = 'mov-hint';
+    hint.textContent = '클릭하면 이미지 & 링크 →';
+    card.appendChild(hint);
+
+    // Tree
+    const tree = document.createElement('div');
+    tree.className = 'tree-section';
+    const tlbl = document.createElement('div');
+    tlbl.className = 'tree-label';
+    tlbl.textContent = '해당 트렌드 → 해당 기법';
+    tree.appendChild(tlbl);
+
+    mov.trends.forEach((tr, ti) => {
+      const isLast = ti === mov.trends.length - 1;
+      const trow = document.createElement('div');
+      trow.className = 'trend-row';
+      const tline = document.createElement('div');
+      tline.className = 'trend-line';
+      if (isLast) {
+        tline.innerHTML = `
+          <span style="position:absolute;left:7px;top:0;height:10px;width:1px;background:var(--muted2);display:block"></span>
+          <span style="position:absolute;left:7px;top:10px;width:8px;height:1px;background:var(--muted2);display:block"></span>
+        `;
+      }
+      const tbody = document.createElement('div');
+      tbody.className = 'trend-body';
+      const tname = document.createElement('div');
+      tname.className = 'trend-name';
+      tname.textContent = tr.name;
+      tbody.appendChild(tname);
+      if (tr.techs && tr.techs.length) {
+        const techRows = document.createElement('div');
+        techRows.className = 'tech-rows';
+        tr.techs.forEach(tech => {
+          const techRow = document.createElement('div');
+          techRow.className = 'tech-row';
+          const techLine = document.createElement('div');
+          techLine.className = 'tech-line';
+          const techName = document.createElement('div');
+          techName.className = 'tech-name';
+          techName.textContent = tech;
+          techRow.appendChild(techLine);
+          techRow.appendChild(techName);
+          techRows.appendChild(techRow);
+        });
+        tbody.appendChild(techRows);
+      }
+      trow.appendChild(tline);
+      trow.appendChild(tbody);
+      tree.appendChild(trow);
+    });
+    card.appendChild(tree);
+
+    // Click → open panel
+    card.addEventListener('click', () => openPanel(mov, era));
+    row.appendChild(card);
+  });
+
+  section.appendChild(row);
+  return section;
+}
+
+// 서양 트랙 빌드
+enrichDesignAtlasLayers(ERAS);
+const gridWest = document.getElementById('gridWest');
+ERAS.forEach(era => gridWest.appendChild(buildEraSection(era)));
+
+// 동양 트랙 빌드
+const gridEast = document.getElementById('gridEast');
+if (typeof ERAS_EAST !== 'undefined') {
+  ERAS_EAST.forEach(era => gridEast.appendChild(buildEraSection(era)));
+}
+
+// 현대 트랙 빌드
+const gridModern = document.getElementById('gridModern');
+if (typeof ERAS_MODERN !== 'undefined') {
+  ERAS_MODERN.forEach(era => gridModern.appendChild(buildEraSection(era)));
+}
+
+function openExternal(url) {
+  const opened = window.open(url, '_blank', 'noopener,noreferrer');
+  if (!opened) {
+    window.location.href = url;
+  }
+}
+
+
+function cleanQueryText(text) {
+  return String(text || '')
+    .replace(/["“”]/g, '')
+    .replace(/\([^)]*\)/g, ' ')
+    .replace(/→/g, ' ')
+    .replace(/·/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function buildSearchUrl(label, movName, type) {
+  const base = cleanQueryText(label + ' ' + movName);
+  if (type === 'wiki') {
+    return `https://ko.wikipedia.org/w/index.php?search=${encodeURIComponent(base)}`;
+  }
+  if (type === 'images') {
+    return `https://www.google.com/search?tbm=isch&q=${encodeURIComponent(base)}`;
+  }
+  return `https://www.google.com/search?q=${encodeURIComponent(base + ' 작품 소개 디자인 역사')}`;
+}
+
+function renderWorkDetail(label, mov, type) {
+  const box = document.getElementById('workDetail');
+  if (!box) return;
+
+  const isBrand = type === 'brand';
+  const searchMain = buildSearchUrl(label, mov.name, 'main');
+  const searchImages = buildSearchUrl(label, mov.name, 'images');
+  const searchWiki = buildSearchUrl(label, mov.name, 'wiki');
+
+  box.innerHTML = `
+    <div class="work-detail" style="border-left:3px solid ${mov.color}">
+      <div class="work-detail-kicker">${isBrand ? '대표 브랜드 소개' : '대표 작품 소개'}</div>
+      <div class="work-detail-title">${label}</div>
+      <div class="work-detail-text">
+        이 항목은 <b style="color:var(--text);font-weight:400">${mov.name}</b>을 설명하는 대표 사례야.
+        이 사조의 핵심 흐름은 <b style="color:var(--text);font-weight:400">${mov.modern || '현대 디자인 흐름'}</b>로 이어져.
+        아래 버튼에서 이미지, 작품 설명, 관련 자료를 바로 확인할 수 있어.
+      </div>
+      <div class="work-detail-links">
+        <a class="work-detail-link" href="${searchImages}" target="_blank" rel="noopener noreferrer">이미지 보기 <span>Google Images ↗</span></a>
+        <a class="work-detail-link" href="${searchWiki}" target="_blank" rel="noopener noreferrer">작품/인물 설명 보기 <span>Wikipedia 검색 ↗</span></a>
+        <a class="work-detail-link" href="${searchMain}" target="_blank" rel="noopener noreferrer">관련 자료 더 보기 <span>Google 검색 ↗</span></a>
+      </div>
+    </div>
+  `;
+}
+
+// ── PANEL ──────────────────────────────────────────────
+let activeCard = null;
+
+function openPanel(mov, era) {
+  // Active card highlight
+  document.querySelectorAll('.mov.active').forEach(c => c.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+
+  // Header
+  document.getElementById('panelEra').textContent = `${era.num}  ${era.name}`;
+  document.getElementById('panelEra').style.color = era.color;
+  document.getElementById('panelTitle').textContent = mov.name;
+  document.getElementById('panelTitle').style.color = mov.color;
+
+  const artTag = document.getElementById('panelArtTag');
+  artTag.innerHTML = mov.art ? '<span class="panel-art">미술→디자인 영향</span>' : '';
+
+  let metaHtml = '';
+  if (mov.person) metaHtml += `<b>${mov.person}</b><br>`;
+  if (mov.work)   metaHtml += mov.work + '<br>';
+  if (mov.brand)  metaHtml += mov.brand;
+  document.getElementById('panelMeta').innerHTML = metaHtml;
+
+  const mod = document.getElementById('panelModern');
+  mod.textContent = '↗ ' + mov.modern;
+  mod.style.color = mov.color;
+  mod.style.borderColor = mov.color + '44';
+
+  // WHY / WHAT / HOW / NOW detailed summary
+  const layerPanel = document.getElementById('panelLayerSummary');
+  if (layerPanel) {
+    layerPanel.innerHTML = layerSummaryHTML(mov, era, false);
+    layerPanel.style.borderLeft = `3px solid ${mov.color}`;
+  }
+
+  // Images
+  const imgGrid = document.getElementById('panelImgs');
+  imgGrid.innerHTML = '';
+  (mov.imgs || []).forEach(img => {
+    const url = `https://www.google.com/search?tbm=isch&q=${encodeURIComponent((img.q || img.label) + ' ' + mov.name)}`;
+    const a = document.createElement('a');
+    a.className = 'img-item';
+    a.href = url;
+    a.target = '_blank';
+    a.rel = 'noopener noreferrer';
+    a.addEventListener('click', (e) => {
+      e.stopPropagation();
+      e.preventDefault();
+      openExternal(url);
+    });
+    a.innerHTML = `
+      <div class="img-preview" style="border-left:3px solid ${mov.color}">
+        <div class="img-preview-kicker">대표 이미지 검색</div>
+        <div class="img-preview-title">${img.label}</div>
+        <div class="img-preview-action">이미지 검색에서 보기 ↗</div>
+      </div>
+      <div class="img-item-label">${img.label} · 관련 이미지 자료로 이동 ↗</div>
+    `;
+    imgGrid.appendChild(a);
+  });
+
+  // Links
+  const linkList = document.getElementById('panelLinks');
+  linkList.innerHTML = '';
+  const links = mov.links || {};
+
+  const linkDefs = [
+    { key:'googleArt', icon:'🎨', bg:'#1a1f2e', color:'#6e9ec8', name:'구글 아트 & 컬처', desc:'고화질 이미지 · 작품 상세 감상' },
+    { key:'wiki',      icon:'📖', bg:'#1e1e1e', color:'#dedad2', name:'위키피디아',        desc:'역사적 배경 · 인물 정보 · 영향' },
+    { key:'youtube',   icon:'▶',  bg:'#1f1515', color:'#c86e6e', name:'유튜브 강의 검색',  desc:'관련 다큐 · 아트 해설 · 강의' },
+  ];
+
+  linkDefs.forEach(def => {
+    if (!links[def.key]) return;
+    const a = document.createElement('a');
+    a.className = 'link-btn';
+    a.href = links[def.key];
+    a.target = '_blank';
+    a.rel = 'noopener noreferrer';
+    a.addEventListener('click', (e) => {
+      e.stopPropagation();
+      e.preventDefault();
+      openExternal(links[def.key]);
+    });
+    a.innerHTML = `
+      <div class="link-icon" style="background:${def.bg};color:${def.color}">${def.icon}</div>
+      <div class="link-info">
+        <div class="link-name">${def.name}</div>
+        <div class="link-desc">${def.desc}</div>
+      </div>
+      <div class="link-arrow">↗</div>
+    `;
+    linkList.appendChild(a);
+  });
+
+  // Works & Brands — click item first shows an in-site intro, then provides stable links
+  const workList = document.getElementById('panelWorks');
+  const workDetail = document.getElementById('workDetail');
+  workList.innerHTML = '';
+  if (workDetail) workDetail.innerHTML = '';
+
+  const makeLinkedItem = (label, kicker, type='work') => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = type === 'brand' ? 'work-item work-link work-brand' : 'work-item work-link';
+    btn.style.textAlign = 'left';
+    btn.style.width = '100%';
+    btn.style.cursor = 'pointer';
+    btn.style.fontFamily = 'inherit';
+    btn.style.color = type === 'brand' ? mov.color : 'var(--text)';
+    btn.innerHTML = `
+      <span class="work-kicker">${kicker}</span>
+      <span class="work-title">${label}</span>
+    `;
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      renderWorkDetail(label, mov, type);
+    });
+    workList.appendChild(btn);
+  };
+
+  if (mov.work) {
+    mov.work.split(' · ').map(w => w.trim()).filter(Boolean).forEach(w => {
+      makeLinkedItem(w, '대표 작품 · 누르면 소개 열림', 'work');
+    });
+  }
+
+  if (mov.brand) {
+    mov.brand.split(' · ').map(b => b.trim()).filter(Boolean).forEach(b => {
+      makeLinkedItem(b, '대표 브랜드 · 누르면 소개 열림', 'brand');
+    });
+  }
+
+  if (!mov.work && !mov.brand) {
+    const div = document.createElement('div');
+    div.className = 'work-item';
+    div.textContent = '대표 작품·브랜드 정보가 아직 없습니다.';
+    workList.appendChild(div);
+  }
+
+  // 현대 참고 브랜드/작품 렌더링
+  const modernSection = document.getElementById('modernRefsSection');
+  const modernList = document.getElementById('panelModernRefs');
+  const refs = MODERN_REFS[mov.name] || [];
+  if (refs.length > 0) {
+    modernSection.style.display = 'block';
+    modernList.innerHTML = '';
+    refs.forEach(ref => {
+      const a = document.createElement('a');
+      a.className = 'modern-ref-item';
+      a.href = ref.link;
+      a.target = '_blank';
+      a.rel = 'noopener noreferrer';
+      a.addEventListener('click', e => { e.stopPropagation(); });
+      a.innerHTML = `
+        <div class="modern-ref-dot" style="background:${ref.color || mov.color}"></div>
+        <div class="modern-ref-info">
+          <div class="modern-ref-name" style="color:${ref.color || mov.color}">${ref.name}</div>
+          <div class="modern-ref-desc">${ref.desc}</div>
+        </div>
+        <div class="modern-ref-arrow">↗</div>
+      `;
+      modernList.appendChild(a);
+    });
+  } else {
+    modernSection.style.display = 'none';
+  }
+
+  // ── 현대 전용: 기간·why·지역별 트렌드 렌더링 ──
+  const periodSection  = document.getElementById('modernPeriodSection');
+  const regionSection  = document.getElementById('modernRegionSection');
+  const periodBadge    = document.getElementById('panelPeriodBadge');
+  const whyBox         = document.getElementById('panelWhyBox');
+  const regionTabs     = document.getElementById('regionTabs');
+  const regionContents = document.getElementById('regionContents');
+
+  // 현대 사조인지 판단 (period 또는 why 필드 있으면)
+  if (mov.period || mov.why || mov.regions) {
+
+    // 기간 + Why
+    if (mov.period || mov.why) {
+      periodSection.style.display = 'block';
+      periodBadge.innerHTML = mov.period
+        ? `<div class="period-badge"><span class="period-badge-dot" style="background:${mov.color}"></span>${mov.period}</div>`
+        : '';
+      whyBox.innerHTML = mov.why
+        ? `<div class="why-box" style="border-color:${mov.color}44">
+             <div class="why-box-label">⚡ 왜 이 트렌드가 나왔나</div>
+             ${mov.why}
+           </div>`
+        : '';
+    } else {
+      periodSection.style.display = 'none';
+    }
+
+    // 지역별 탭
+    if (mov.regions && Object.keys(mov.regions).length > 0) {
+      regionSection.style.display = 'block';
+      regionTabs.innerHTML = '';
+      regionContents.innerHTML = '';
+
+      const regionMeta = {
+        global: { flag:'🌐', label:'글로벌' },
+        korea:  { flag:'🇰🇷', label:'한국' },
+        japan:  { flag:'🇯🇵', label:'일본' },
+        china:  { flag:'🇨🇳', label:'중국' },
+        europe: { flag:'🇪🇺', label:'유럽' },
+        west:   { flag:'🇺🇸', label:'미국·서양' },
+      };
+
+      let firstTab = true;
+      Object.entries(mov.regions).forEach(([key, trends]) => {
+        const meta = regionMeta[key] || { flag:'🌍', label:key };
+
+        // 탭 버튼
+        const tab = document.createElement('button');
+        tab.className = 'region-tab' + (firstTab ? ' active' : '');
+        tab.textContent = meta.flag + ' ' + meta.label;
+        tab.dataset.region = key;
+        tab.addEventListener('click', () => {
+          document.querySelectorAll('.region-tab').forEach(t => t.classList.remove('active'));
+          document.querySelectorAll('.region-content').forEach(c => c.classList.remove('active'));
+          tab.classList.add('active');
+          document.getElementById('rc-' + key).classList.add('active');
+        });
+        regionTabs.appendChild(tab);
+
+        // 탭 콘텐츠
+        const content = document.createElement('div');
+        content.className = 'region-content' + (firstTab ? ' active' : '');
+        content.id = 'rc-' + key;
+
+        trends.forEach(t => {
+          const item = document.createElement('div');
+          item.className = 'region-trend-item';
+          item.innerHTML = `
+            <div class="region-trend-header">
+              <div class="region-trend-name" style="color:${mov.color}">${t.name}</div>
+              ${t.period ? `<div class="region-trend-period">📅 ${t.period}</div>` : ''}
+            </div>
+            ${t.why ? `<div class="region-trend-why">⚡ ${t.why}</div>` : ''}
+            ${t.techs && t.techs.length ? `<div class="region-trend-techs">${t.techs.map(tc=>`<span class="region-trend-tech">${tc}</span>`).join('')}</div>` : ''}
+            ${t.brand ? `<div class="region-trend-brand">🏷 ${t.brand}</div>` : ''}
+          `;
+          content.appendChild(item);
+        });
+
+        regionContents.appendChild(content);
+        firstTab = false;
+      });
+    } else {
+      regionSection.style.display = 'none';
+    }
+
+  } else {
+    periodSection.style.display = 'none';
+    regionSection.style.display = 'none';
+  }
+
+  // Open
+  document.getElementById('panel').classList.add('open');
+  document.getElementById('overlay').classList.add('open');
+}
+
+function closePanel() {
+  document.getElementById('panel').classList.remove('open');
+  document.getElementById('overlay').classList.remove('open');
+  document.querySelectorAll('.mov.active').forEach(c => c.classList.remove('active'));
+}
+</script>
+  <script src="eras_east.js"></script>
+  <script src="eras_modern.js"></script>
+</body>
+</html>
